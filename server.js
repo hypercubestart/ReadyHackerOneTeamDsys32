@@ -6,6 +6,7 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 const bodyParser = require('body-parser');
+const routes = require('./routes');
 const app = express();
 const port = 3000;
 
@@ -42,9 +43,7 @@ app.use(sessionMiddleware);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.send('pong!');
-});
+routes(app);
 
 app.listen(port, () => {
   console.log('Bonnie API live on port ' + port);

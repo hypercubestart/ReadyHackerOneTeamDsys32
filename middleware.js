@@ -1,0 +1,64 @@
+'use strict';
+
+// dependencies
+const schemas = require('./schemas');
+const auth = require('./auth');
+// mongoose models
+const User = schemas.User;
+
+const VI = (...parameters) => {
+  for (var i = 0; i < parameters.length; i++) {
+    if (!parameters[i]) return false;
+  }
+  return true;
+}
+
+exports.authenticate = async (req, res, next) => {
+  var email = req.body.email;
+  var password = req.body.password;
+
+  if (!VI(email, password)) res.status(400).end();
+
+  try {
+    let user = await User.findOne({
+      email: email
+    });
+
+    if (!user) return res.status(404).end();
+
+    auth.check(password, user.passHashed, (valid) => {
+      if (valid) {
+        res.locals.user = user;
+        req.session.authenticated = true;
+        next();
+      } else res.status(401).end();
+    });
+  } catch (err) {
+    res.status(500).end();
+  }
+}
+
+exports.authenticateStaff = async (req, res, next) => {
+
+}
+
+exports.verifySession = async (req, res, next) => {
+  var id = req.session._id;
+
+  if (!id || !req.session.authenticated) return res.status(401).end();
+
+  try {
+    let user = await User.findOne({
+      _id: id
+    });
+
+    if (!user) return res.status(401).end();
+
+    res.locals.user = user;
+    next();
+  }
+}
+
+exports.verifyStaffSession = async (req, res, next) => {
+
+}

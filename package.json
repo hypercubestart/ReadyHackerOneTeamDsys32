@@ -12,6 +12,7 @@
   "author": "Terrance Li, Andrew Liu, Nathan Yan",
   "dependencies": {
     "async": "^2.6.1",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.2",
     "compression": "^1.7.2",
     "connect-mongo": "^2.0.1",
