@@ -34,6 +34,7 @@ exports.authenticate = async (req, res, next) => {
       } else res.status(401).end();
     });
   } catch (err) {
+    console.log(err);
     res.status(500).end();
   }
 }
@@ -56,6 +57,9 @@ exports.verifySession = async (req, res, next) => {
 
     res.locals.user = user;
     next();
+  } catch (err) {
+    console.log(err);
+    res.status(500).end();
   }
 }
 
