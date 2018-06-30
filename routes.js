@@ -11,6 +11,8 @@ module.exports = (app) => {
   app.route('/user/register/').post(bonnieController.register);
   app.route('/user/logout/').post(bonnieMiddleware.verifySession).post(bonnieController.logout);
 
+  /*
   app.route('/items/get/').get(bonnieMiddleware.verifySession).get(bonnieController.fetchItems);
   app.route('/order/place/').post(bonnieMiddleware.verifySession).post(bonnieController.placeOrder);
+  */
 }
