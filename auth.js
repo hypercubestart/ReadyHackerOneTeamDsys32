@@ -1,5 +1,5 @@
 'use strict';
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const saltRounds = 12;
 
 exports.hash = (password, callback) => {
