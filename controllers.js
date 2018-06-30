@@ -1,5 +1,6 @@
 'use strict';
 
+const auth = require('./auth');
 const async = require('async');
 const schemas = require('./schemas');
 
@@ -16,4 +17,33 @@ exports.login = (req, res) => {
   req.session._id = user._id;
 
   res.status(200).end();
+}
+
+exports.logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) res.status(500).end();
+    else res.status(200).end();
+  });
+}
+
+exports.register = (req, res) => {
+  var name = req.body.name;
+  var email = req.body.email;
+  var password = req.body.password;
+
+  if (!VI(name, email, password)) return res.status(400).end();
+
+  auth.hash(password, (hash) => {
+    var newUser = new User({
+      name: name,
+      email: email,
+      passHashed: hash,
+      previousOrders: []
+    });
+
+    newUser.save((err) => {
+      if (err) res.status(500).end();
+      else res.status(200).end();
+    });
+  });
 }
