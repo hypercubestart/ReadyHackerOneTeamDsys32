@@ -6,6 +6,7 @@ COPY package.json /usr/src/app
 
 # Install app dependencies
 RUN npm install
+npm rebuild bcrypt --update-binary
 
 COPY . /usr/src/app
 
