@@ -1,25 +1,25 @@
 {
-  "name": "mobile",
-  "version": "0.1.0",
+  "name": "bonnie-server",
+  "version": "0.0.1",
   "private": true,
-  "devDependencies": {
-    "babel-preset-react-native-stage-0": "^1.0.1",
-    "jest": "^23.2.0",
-    "jest-react-native": "^18.0.0",
-    "react-test-renderer": "16.3.1"
-  },
+  "main": "server.js",
   "scripts": {
-    "start": "react-native start",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "test": "jest"
+    "build-prod": "docker build -f Dockerfile.prod -t docker.dsys32.com/bonnie-prod:latest -t docker.dsys32.com/bonnie-prod:v${npm_package_version} .",
+    "build-dev": "docker build -f Dockerfile.dev -t docker.dsys32.com/bonnie-dev:latest -t docker.dsys32.com/bonnie-dev:v${npm_package_version} .",
+    "start-prod": "NODE_ENV=production node server.js",
+    "start-dev": "NODE_ENV=development node server.js"
   },
-  "jest": {
-    "preset": "react-native"
-  },
+  "author": "Terrance Li, Andrew Liu, Nathan Yan",
   "dependencies": {
-    "react": "16.3.1",
-    "react-native": "~0.55.2",
-    "react-navigation": "^2.5.5"
+    "async": "^2.6.1",
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.2",
+    "connect-mongo": "^2.0.1",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mongoose": "5.1.7",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "socket.io": "^2.1.1"
   }
 }
