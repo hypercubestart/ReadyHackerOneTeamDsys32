@@ -1,6 +1,6 @@
 {
   "name": "bonnie-server",
-  "version": "0.4.17",
+  "version": "0.5.0",
   "private": true,
   "main": "server.js",
   "scripts": {
