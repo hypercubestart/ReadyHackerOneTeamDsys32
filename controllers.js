@@ -88,7 +88,7 @@ exports.placeOrder = async (req, res) => {
         if (err) {
           reject(err)
         } else {
-        resolve(itemObject.price * item.quantity);
+          resolve(itemObject.price * item.quantity);
         }
       })
     })
@@ -105,7 +105,11 @@ exports.placeOrder = async (req, res) => {
     return orderObject.save()
   }).then(order => {
     // TODO: sockets to the staff
-    res.status(200).json(order);
+    user.previousOrders.push(order._id);
+
+    return user.save().then(function() {
+      res.status(200).json(order);
+    });
   }).catch(err => {
     console.log(err)
     res.status(500).end();
