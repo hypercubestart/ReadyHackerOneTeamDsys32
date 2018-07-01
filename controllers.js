@@ -65,6 +65,9 @@ exports.fetchItems = async (req, res) => {
 }
 
 exports.placeOrder = async (req, res) => {
-  //var user = res.locals.user;
-
+  /*
+  var user = res.locals.user;
+  var items = req.body.items;
+  var orderedDate = 
+*/
 }

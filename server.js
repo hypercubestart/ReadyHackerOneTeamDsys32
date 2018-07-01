@@ -31,7 +31,7 @@ const sessionMiddleware = session({
     mongooseConnection: mongoose.connection
   }),
   cookie: {
-    domain: '*',
+    domain: '.dsys32.com',
     httpOnly: true,
     maxAge: 253402300000000,
     path: '/',
