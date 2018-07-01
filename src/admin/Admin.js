@@ -52,7 +52,7 @@ export default class Admin extends Component {
         var page;
         if (this.state.tab == 0){
             page = <div>
-                <div style = {{width: "100%", display: "flex"}}>
+                <div style = {{width: "140%", marginLeft: "-20%", display: "flex"}}>
                     <div style = {{width: "50%"}}>
                         {this.state.currentOrders.map((order) => {
                             return <Order data = {order} availableItems={this.state.items}></Order>
@@ -259,7 +259,7 @@ class StaffCreateForm extends Component {
 
         console.log(itemNames);
         
-        return <div style = {{position: "relative", width: "100%", height: "fit-content", minHeight: "140px", background: "white", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
+        return <div style = {{position: "relative", width: "70%", height: "fit-content", minHeight: "140px", background: "white", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
           <div>
             <div style = {{fontSize: "20px", color: "black"}}>{this.props.data.user.name}: {new Buffer(this.props.data._id.toString(), 'hex').toString('base64').substring(0, 8)}</div>
               {
@@ -269,10 +269,10 @@ class StaffCreateForm extends Component {
               }
              <div style = {{fontSize: "20px", color: "#bbb", position: "absolute", top: "15px", right: "25px"}}>{moment(parseInt(timestamp, 16) * 1000).fromNow()}</div>
            
-             <div style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-1'}} onClick = {() => {}}>
+             <div className = "cancel-order-button" style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-1'}} onClick = {() => {}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "10px", color: "white", width: "fit-content"}}>close</div>
              </div>
-             <div style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '-2'}}>
+             <div className = "fulfill-order-button" style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '-2'}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "0px", color: "white", width: "fit-content"}}>check</div>
              </div>
              
