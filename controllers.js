@@ -96,7 +96,20 @@ exports.placeOrder = async (req, res) => {
         }
       })
     })
-  })
+  });
+
+  var itemPopPromises = items.map((item) => {
+    return new Promise((resolve, reject) => {
+      Item.findOneAndUpdate({_id: item._id}, { $inc: { popularity: item.quantity }}, (err) => {
+        if (err) reject (err);
+        else resolve();
+      });
+    }); 
+  });
+  Promise.all(itemPopPromises).catch((err) => {
+    console.log(err);
+  });
+
   Promise.all(promises).then(function(values) {
     return values.reduce((a, b) => a + b, 0)
   }).then(totalPrice => {
