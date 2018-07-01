@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Checkout from './Checkout';
+import Confirmation from './Confirmation';
 
 import { Link } from 'react-router-dom';
 import {Motion, spring, presets} from 'react-motion';
@@ -25,6 +26,8 @@ class Order extends Component {
     this.changeQuantity = this.changeQuantity.bind(this);
     this.cancelItem = this.cancelItem.bind(this);
     this.handleCheckOut = this.handleCheckOut.bind(this);
+    this.handleConfirm = this.handleConfirm.bind(this);
+    this.handleBack = this.handleBack.bind(this);
   }
 
   async componentWillMount(){
@@ -56,6 +59,17 @@ class Order extends Component {
       }
     }
     toast('Select something before you check out!');
+  }
+
+  handleBack() {
+    var step = this.state.step;
+
+    step--;
+    if (step < 0){
+      return 
+    }else{
+      this.setState({step: step})
+    }
   }
 
   handleConfirm() {
@@ -139,13 +153,13 @@ class Order extends Component {
       </div>
     })
 
-    let pages = <Motion defaultStyle={{x: 0}} style={{x: spring(this.state.step, presets.wobbly)}}>
+    let pages = <Motion defaultStyle={{x: 0}} style={{x: spring(this.state.step, presets.stiff)}}>
       {value => <div style = {{marginLeft: (- value.x * 130) + "%", position: "relative", width: "200%"}}>
         <div style = {{position: "absolute", top: "0", left: "0", width: "50%"}}>
           <div className = "order-page" >
             {itemGroups}
 
-            {this.state.step == 0 ? <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button> : <div><Button style = {{width: "fit-content", color : "#1c5bff", border: "3px solid", borderColor : "#1c5bff", position: "fixed", bottom: "50px", right: "300px"}} content = "back" callback = {() => this.handleCheckOut()}></Button><Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px", border: "3px solid #1c5bff"}} content = "finish" callback = {() => this.handleConfirm()}></Button></div>}
+            {this.state.step == 0 ? <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button> : <div><Button style = {{width: "fit-content", color : "#1c5bff", border: "3px solid", borderColor : "#1c5bff", position: "fixed", bottom: "50px", right: "300px"}} content = "back" callback = {() => this.handleBack()}></Button><Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px", border: "3px solid #1c5bff"}} content = "finish" callback = {() => this.handleConfirm()}></Button></div>}
             
           </div>
         </div>
@@ -155,6 +169,12 @@ class Order extends Component {
             <Checkout items = {this.state.items} changeQuantityCallback = {this.changeQuantity} cancelItemCallback = {this.cancelItem}></Checkout>
           </div>
         </div>    
+
+        <div className = "order-page" style = {{position: "absolute", top: "0", left: "114.8%", width: "50%"}}>
+          <div className = "order-page" style = {{paddingTop: "0"}}>
+            <Confirmation items = {this.state.items} changeQuantityCallback = {this.changeQuantity} cancelItemCallback = {this.cancelItem}></Confirmation>
+          </div>
+        </div>    
     </div>}
     </Motion>
 
@@ -162,7 +182,7 @@ class Order extends Component {
     
       <div style = {{position: 'fixed', top: '0', left: '0', height: '150px', width: '100%', background: "white", zIndex: "1"}}></div>
 
-      <Motion defaultStyle={{x: 0}} style={{x: spring(this.state.step, presets.wobbly)}}>
+      <Motion defaultStyle={{x: 0}} style={{x: spring(this.state.step, presets.stiff)}}>
         {value => <div className = "order-steps" style = {{marginLeft: (15 - value.x * 33.5) + "%", marginBottom: "25px", width: "100%", position: "fixed", top: "80px", zIndex: '10000', left: '0'}}>
         <OrderStep content = "menu" selected = {this.state.step == 0}></OrderStep>
         <OrderStep content = "check out" selected = {this.state.step == 1}></OrderStep>
