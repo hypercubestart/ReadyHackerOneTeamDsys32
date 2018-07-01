@@ -133,10 +133,11 @@ exports.registerStaff = async (req, res) => {
 
 exports.fetchOrders = async (req, res) => {
   try {
-    let orders = await Orders.find({fulfilledTime: undefined, cancelledTime: undefined}).exec();
+    let orders = await Orders.find({fulfilledTime: { $exists: false }, cancelledTime: { $exists: false }}).exec();
 
     res.status(200).json(orders);
   } catch (err) {
+    console.log(err);
     res.status(500).end();
   }
 }
