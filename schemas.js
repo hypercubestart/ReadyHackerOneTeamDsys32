@@ -42,8 +42,8 @@ var OrderSchema = new Schema({
 });
 
 var Item = mongoose.model('Item', ItemSchema, 'items');
-var Order = mongoose.model('Order', ItemSchema, 'orders');
-var User = mongoose.model('User', ItemSchema, 'users');
+var Order = mongoose.model('Order', OrderSchema, 'orders');
+var User = mongoose.model('User', UserSchema, 'users');
 
 module.exports = {
   Item: Item,
