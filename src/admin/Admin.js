@@ -19,6 +19,18 @@ export default class Admin extends Component {
         }
     }
 
+    fulfillOrderIntermediate = (id) => {
+      fulfillOrder(id, (response) => {
+        this.fetchOrders();
+      });
+    }
+
+    cancelOrderIntermediate = (id) => {
+      cancelOrder(id, (response) => {
+        this.fetchOrders();
+      });
+    }
+
     exportOrders = () => {
       const fileName = 'orders'
       const exportType = 'json'
@@ -28,22 +40,26 @@ export default class Admin extends Component {
       });
     }
 
-    componentDidMount() {
-        getOrders((res) => {
-            console.log(res.data);
+    fetchOrders = () => {
+      getOrders((res) => {
+        console.log(res.data);
 
-            let orders = res.data;
+        let orders = res.data;
 
-            orders.forEach((order, index, orders) => {
-              if (order.fulfilledTime) orders[index].status = 2;
-              else if (order.cancelledTime) orders[index].status = 1;
-              else orders[index].status = 0;
-            }); 
+        orders.forEach((order, index, orders) => {
+          if (order.fulfilledTime) orders[index].status = 2;
+          else if (order.cancelledTime) orders[index].status = 1;
+          else orders[index].status = 0;
+        }); 
 
-            this.setState({
-                currentOrders: orders
-            });
+        this.setState({
+            currentOrders: orders
         });
+      });
+    }
+
+    componentDidMount() {
+        this.fetchOrders();
 
         getItems((res) => {
           let items = res.data;
@@ -67,7 +83,7 @@ export default class Admin extends Component {
                 <div style = {{width: "140%", marginLeft: "-20%", display: "flex"}}>
                     <div style = {{width: "50%"}}>
                         {this.state.currentOrders.map((order) => {
-                            return <Order data = {order} availableItems={this.state.items} fulfillOrder={fulfillOrder} cancelOrder={cancelOrder}></Order>
+                            return <Order data = {order} availableItems={this.state.items} fulfillOrder={this.fulfillOrderIntermediate} cancelOrder={this.cancelOrderIntermediate}></Order>
                         })}
                     </div>
                     <div style = {{width: "50%"}} orders = {this.state.currentOrders}></div>
