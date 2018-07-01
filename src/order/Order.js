@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Button from '../components/Button';
 import axios from 'axios';
 
 import { Link } from 'react-router-dom';
@@ -144,18 +144,6 @@ class Order extends Component {
       <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCreateUser()}></Button>
 
     </div>
-  }
-}
-
-class Button extends Component {
-  render() {
-    if (!this.props.style){
-      var style = {marginBottom: "20px", width: "200px"};
-    }else {
-      var style = this.props.style;
-    }
-    
-    return <div className = 'button z-depth-3' style = {style} onClick = {this.props.callback}>{this.props.content}</div>;
   }
 }
 
