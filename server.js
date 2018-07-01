@@ -34,6 +34,7 @@ const sessionMiddleware = session({
     //domain: '.dsys32.com',
     httpOnly: true,
     maxAge: 253402300000000,
+    sameSite: false,
     path: '/',
     secure: true
   },
