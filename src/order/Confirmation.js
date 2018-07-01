@@ -59,10 +59,10 @@ export default class Confirmation extends Component {
 
         <div style = {{fontSize: "50px", color: "black", marginBottom: "0px", marginTop: "25px"}}>user information</div>
         <div style = {{fontSize: "36px", color: "#527aff"}}>
-            {userInfo.name}
+            {this.state.userInfo.name}
         </div>
         <div style = {{fontSize: "36px", color: "#527aff"}}>
-            {userInfo.email}
+            {this.state.userInfo.email}
         </div>
     </div>
   }
