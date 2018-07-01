@@ -117,7 +117,12 @@ class AdminLink extends Component {
 
              <div style = {{fontSize: "20px", color: "#bbb", position: "absolute", top: "15px", right: "25px"}}>{moment(parseInt(timestamp, 16) * 1000).fromNow()}</div>
            
-             <div style = {{position: "absolute", right: "-50px", top: "0", background: "#f05056", height: "100%", width: "70px", border: "3px #f05056 solid"}}></div>
+             <div style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-1'}}>
+                <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "10px", color: "white", width: "fit-content"}}>close</div>
+             </div>
+             <div style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '-2'}}>
+                <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "0px", color: "white", width: "fit-content"}}>check</div>
+             </div>
              
           </div>
         </div>
