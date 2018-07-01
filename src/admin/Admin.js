@@ -20,6 +20,7 @@ export default class Admin extends Component {
     }
 
     exportOrders = () => {
+        console.log("ass nuke please do not commit this lol");
       fd(this.state.currentOrders, 'order.csv');
     }
 
@@ -59,7 +60,7 @@ export default class Admin extends Component {
                         })}
                     </div>
                     <div style = {{width: "50%"}} orders = {this.state.currentOrders}></div>
-                     <Button content = 'export orders' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} onClick = {this.exportOrders}></Button>
+                     <Button content = 'export orders' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} callback = {() => {console.log("lesser ass nuke"); this.exportOrders()}}></Button>
                 </div>
             </div>;
         }else if (this.state.tab == 2){
