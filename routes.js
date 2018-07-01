@@ -25,4 +25,6 @@ module.exports = (app) => {
   app.route('/order/get/').get(bonnieMiddleware.verifyStaffSession).get(bonnieController.fetchOrders);
   app.route('/order/fulfill/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.fulfillOrder);
   app.route('/order/cancel/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.cancelOrder);
+  app.route('/order/export/').get(bonnieMiddleware.verifyStaffSession).get(bonnieController.exportOrders);
+  
 }

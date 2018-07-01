@@ -168,4 +168,15 @@ exports.cancelOrder = async (req, res) => {
   } catch (err) {
     res.status(500).end();
   }
+
+  exports.exportOrders = async (req, res) => {
+    try {
+      let orders = await Order.find({}).exec();
+  
+      res.status(200).json(orders);
+    } catch (err) {
+      console.log(err);
+      res.status(500).end();
+    }
+  }
 }
