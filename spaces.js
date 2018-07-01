@@ -4,6 +4,7 @@ const keyID = process.env.SPACES_KEY;
 const secret = process.env.SPACES_SECRET;
 const aws = require('aws-sdk');
 const hat = require('hat');
+const fs = require('fs');
 
 aws.config.update({
   accessKeyId: keyID,
@@ -31,8 +32,8 @@ exports.uploadFile = async function (path, name){
 async function sendToSpace(name, content, callback){
   var key = hat();
   
-  keyName = "Bonnie Storage" + "/" + key;
-  keyUrl = ("https://dsys32.nyc3.digitaloceanspaces.com/" + keyName).replace(/ /g, '%20'); // Make url web-friendly
+  var keyName = "Bonnie Storage" + "/" + key;
+  var keyUrl = ("https://dsys32.nyc3.digitaloceanspaces.com/" + keyName).replace(/ /g, '%20'); // Make url web-friendly
 
   // We don't really have to await for the file upload
   var data = s3.putObject({
