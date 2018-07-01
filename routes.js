@@ -23,7 +23,7 @@ module.exports = (app) => {
   app.route('/staff/get/').get(bonnieMiddleware.verifyStaffSession).get(bonnieController.getStaff)
   app.route('/staff/logout/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.logout);
   
-  app.route('/order/get/').get(bonnieMiddleware.verifyStaffSession).get(bonnieController.fetchOrders);
+  app.route('/order/get/').get(bonnieMiddleware.verifyStaffSession).get(bonnieController.exportOrders);
   app.route('/order/fulfill/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.fulfillOrder);
   app.route('/order/cancel/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.cancelOrder);
   app.route('/order/export/').get(bonnieMiddleware.verifyStaffSession).get(bonnieController.exportOrders);
