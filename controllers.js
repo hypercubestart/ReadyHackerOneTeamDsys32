@@ -99,6 +99,12 @@ exports.placeOrder = async (req, res) => {
   } catch (err) {
     res.status(500).end();
   }
-
-  
 }
+
+exports.fetchUser = async (req, res) => {
+  var user = res.locals.user;
+
+  res.status(200).json(user);
+}
+
+

@@ -31,13 +31,12 @@ const sessionMiddleware = session({
     mongooseConnection: mongoose.connection
   }),
   cookie: {
-    domain: '',
     httpOnly: true,
     maxAge: 253402300000000,
     sameSite: false,
     path: '/',
-    secure: true
-  },
+    secure: false
+  },  
   rolling: true,
   unset: 'destroy'
 });
