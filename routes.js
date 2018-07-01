@@ -14,7 +14,7 @@ module.exports = (app) => {
   app.route('/user/get').get(bonnieMiddleware.verifySession).get(bonnieController.fetchUser);
   // TODO: add a change-password route if we have time
   
-  app.route('/items/get/').get(bonnieMiddleware.verifySession).get(bonnieController.fetchItems);
+  app.route('/itemsget/').get(bonnieMiddleware.verifySession).get(bonnieController.fetchItems);
   app.route('/order/place/').post(bonnieMiddleware.verifySession).post(bonnieController.placeOrder);
 
   // staff routes
@@ -26,5 +26,8 @@ module.exports = (app) => {
   app.route('/order/fulfill/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.fulfillOrder);
   app.route('/order/cancel/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.cancelOrder);
   app.route('/order/export/').get(bonnieMiddleware.verifyStaffSession).get(bonnieController.exportOrders);
-  
+
+  app.route('/item/add/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.addItem);
+  app.route('/item/remove/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.removeItem);
+
 }

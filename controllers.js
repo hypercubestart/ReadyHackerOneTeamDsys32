@@ -2,6 +2,7 @@
 
 const auth = require('./auth');
 const async = require('async');
+const spaces = require('./spaces');
 const schemas = require('./schemas');
 
 // mongoose models
@@ -181,4 +182,46 @@ exports.exportOrders = async (req, res) => {
   }
 }
 
+exports.addItem = async (req, res) => {
+  var picture = req.files.picture;
 
+  var name = req.body.name;
+  var description = req.body.description;
+  var price = req.body.price;
+  var category = req.body.category;
+
+  if (!VI(name, description, price, category, picture)) return res.status(400).end();
+
+  try {
+    var url = await spaces.uploadFile(picture.file, picture.filename);
+
+    var itemObject = new Item({
+      name: name,
+      description: description,
+      price: price,
+      picture: url,
+      popularity: 0,
+      category: category
+    });
+
+    let item = await itemObject.save();
+
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
+  }
+}
+
+exports.removeItem = async (req, res) => {
+  var id = req.body.id;
+
+  try {
+    await Item.deleteOne({_id: id}).exec();
+
+    // TODO: remove the image from spaces
+
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
+  }
+}
