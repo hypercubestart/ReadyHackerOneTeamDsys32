@@ -20,6 +20,7 @@ module.exports = (app) => {
   // staff routes
   app.route('/staff/login/').post(bonnieMiddleware.authenticateStaff).post(bonnieController.login);
   app.route('/staff/register/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.registerStaff);
+  app.route('/staff/get/').get(bonnieMiddleware.verifyStaffSession).get(bonnieController.getStaff)
   app.route('/staff/logout/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.logout);
   
   app.route('/order/get/').get(bonnieMiddleware.verifyStaffSession).get(bonnieController.fetchOrders);

@@ -141,6 +141,17 @@ exports.registerStaff = async (req, res) => {
   });
 }
 
+exports.getStaff = async (req, res) => { 
+  try {
+    var staff = await Staff.find({}).exec()
+
+    res.status(200).json(staff);
+  } catch(err) {
+    res.status(500).end();
+  }
+
+}
+
 exports.fetchOrders = async (req, res) => {
   try {
     let orders = await Order.find({fulfilledTime: { $exists: false }, cancelledTime: { $exists: false }}).exec();
