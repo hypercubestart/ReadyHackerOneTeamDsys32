@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import io from "socket.io";
 import exportFromJSON from 'export-from-json'
 
-import { getOrders, getItems, getStaff, cancelOrder, fulfillOrder } from '../api';
+import { getOrders, getItems, getStaff, cancelOrder, fulfillOrder, exportOrders } from '../api';
 import Button from "../components/Button";
 import moment from 'moment';
 
@@ -23,7 +23,9 @@ export default class Admin extends Component {
       const fileName = 'orders'
       const exportType = 'json'
  
-      exportFromJSON({ data: this.state.currentOrders, fileName, exportType })
+      exportOrders((response) => {
+        exportFromJSON({ data: response.data, fileName, exportType })
+      });
     }
 
     componentDidMount() {
