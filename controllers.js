@@ -20,6 +20,7 @@ const VI = (...parameters) => {
 exports.login = (req, res) => {
   var user = res.locals.user;
   req.session._id = user._id;
+  req.session.authenticated = true;
 
   res.status(200).end();
 }
@@ -46,9 +47,13 @@ exports.register = (req, res) => {
       previousOrders: []
     });
 
-    newUser.save((err) => {
+    newUser.save((err, savedUser) => {
       if (err) res.status(500).end();
-      else res.status(200).end();
+      else {
+        req.session._id = savedUser._id;
+        req.session.authenticated = true;
+        res.status(200).end();
+      }
     });
   });
 }
