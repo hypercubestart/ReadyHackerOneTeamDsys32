@@ -11,7 +11,8 @@ var UserSchema = new Schema({
   previousOrders: [{
     type: Schema.Types.ObjectId,
     ref: 'Order'
-  }]
+  }],
+  admin: Boolean
 });
 
 var ItemSchema = new Schema({
@@ -41,20 +42,12 @@ var OrderSchema = new Schema({
   cancelledTime: Date
 });
 
-var StaffSchema = new Schema({
-  name: String,
-  email: String,
-  passHashed: String
-});
-
 var Item = mongoose.model('Item', ItemSchema, 'items');
 var Order = mongoose.model('Order', OrderSchema, 'orders');
 var User = mongoose.model('User', UserSchema, 'users');
-var Staff = mongoose.model('Staff', StaffSchema, 'staff');
 
 module.exports = {
   Item: Item,
   Order: Order,
-  User: User,
-  Staff: Staff
+  User: User
 };

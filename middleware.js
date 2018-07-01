@@ -8,7 +8,6 @@ const auth = require('./auth');
 const User = schemas.User;
 const Item = schemas.Item;
 const Order = schemas.Order;
-const Staff = schemas.Staff;
 
 const VI = (...parameters) => {
   for (var i = 0; i < parameters.length; i++) {
@@ -50,15 +49,15 @@ exports.authenticateStaff = async (req, res, next) => {
   if (!VI(email, password)) res.status(400).end();
 
   try {
-    let staff = await Staff.findOne({
+    let user = await User.findOne({
       email: email
     });
 
-    if (!staff) return res.status(404).end();
+    if (!user || !user.admin) return res.status(404).end();
 
-    auth.check(password, staff.passHashed, (valid) => {
+    auth.check(password, user.passHashed, (valid) => {
       if (valid) {
-        res.locals.user = staff;
+        res.locals.user = user;
         req.session.authenticated = true;
         next();
       } else res.status(401).end();
@@ -95,11 +94,11 @@ exports.verifyStaffSession = async (req, res, next) => {
   if (!id || !req.session.authenticated) return res.status(401).end();
 
   try {
-    let user = await Staff.findOne({
+    let user = await User.findOne({
       _id: id
     });
 
-    if (!user) return res.status(401).end();
+    if (!user || !user.admin) return res.status(401).end();
 
     res.locals.user = user;
     next();

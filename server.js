@@ -11,7 +11,7 @@ const routes = require('./routes');
 const app = express();
 const schemas = require('./schemas');
 const auth = require('./auth');
-const Staff = schemas.Staff;
+const User = schemas.User;
 const cors = require('cors');
 const port = 3000;
 const defaultStaffPass = 'admin';
@@ -25,16 +25,17 @@ var db = mongoose.connection;
 db.once('open', async () => {
   console.log('Connected to MongoDB!');
 
-  var staff = await Staff.find({}).exec();
+  var staff = await User.find({admin: true}).exec();
 
   // no staff, create root
   if (staff.length === 0) {
     auth.hash(defaultStaffPass, async (hash) => {
       try {
-        var newRootStaff = new Staff({
+        var newRootStaff = new User({
           name: 'admin',
           email: 'admin',
-          passHashed: hash
+          passHashed: hash,
+          admin: true
         });
 
         await newRootStaff.save();
@@ -44,17 +45,6 @@ db.once('open', async () => {
         console.log(err);
       }
     });
-  } else if (staff.length > 1) { // other staff created, remove root
-    try {
-      await Staff.deleteOne({
-        name: 'admin',
-        email: 'admin'
-      }).exec();
-      console.log('deleted root staff');
-    } catch (err) {
-      console.log('error deleting root staff: ');
-      console.log(err);
-    }
   }
 });
 
