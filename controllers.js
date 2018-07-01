@@ -4,6 +4,9 @@ const auth = require('./auth');
 const async = require('async');
 const spaces = require('./spaces');
 const schemas = require('./schemas');
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // mongoose models
 const User = schemas.User;
@@ -155,7 +158,17 @@ exports.fulfillOrder = async (req, res) => {
   if (!id) return res.status(400).end();
 
   try {
-    await Order.updateOne({_id: id}, { $set: { fulfilledTime: Date.now() }}).exec();
+    let order = await Order.updateOne({_id: id}, { $set: { fulfilledTime: Date.now() }}).exec();
+    let user = await User.findOne({_id: order.user}).exec()
+
+    const msg = {
+      to: user.email,
+      from: 'bonnies@bonnies.com',
+      subject: 'Your Order,' + order._id.toString().slice(0, 6) + ', is ready',
+      text: 'Please come pickup your recent order!',
+      html: '<strong>Have a wonderful 4th of July holiday!!</strong>',
+    }
+    sgMail.send(msg);
 
     res.status(200).end();
   } catch (err) {
