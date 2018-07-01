@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { Link } from 'react-router-dom';
 
-const BASE_URL = "http://10.0.99.62:3001" //"https://bonnie-api.dsys32.com"
+const BASE_URL = "https://bonnie-api.dsys32.com"; //"http://10.0.99.62:3001"
 
 class Login extends Component {
   constructor(props){
@@ -63,7 +63,7 @@ class Login extends Component {
       <div className = "login-card valign-wrapper z-depth-3">
         <div style = {{width: "100%", textAlign: "center"}}>
 
-          <form method = "POST" action = "http://10.0.99.62:3001/user/login" ref = {this.loginForm}>
+          <form method = "POST" action = "https://bonnie-api.dsys32.com/user/login" ref = {this.loginForm}>
             <input name = 'email' placeholder = "email" value = {this.state.email} className = 'login-input' onChange = {this.changeEmail}></input>
             <input name = 'password' placeholder = "password" value = {this.state.password} type = 'password' className = 'login-input' onChange = {this.changePassword}></input>
           </form>
