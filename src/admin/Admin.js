@@ -3,7 +3,7 @@ import {OrderStep} from "../order/Order";
 import React, { Component } from 'react'
 import exportFromJSON from 'export-from-json'
 
-import { getOrders, getItems, getStaff, cancelOrder, fulfillOrder, exportOrders } from '../api';
+import { getOrders, getItems, getStaff, cancelOrder, fulfillOrder, exportOrders, addItem } from '../api';
 import Button from "../components/Button";
 import moment from 'moment';
 
@@ -39,9 +39,27 @@ export default class Admin extends Component {
       });
     }
 
+    handleAddItem = (name, description, price, category, picture) => {
+        addItem(name, description, price, category, picture, (res)=>{
+            getItems((res) => {
+
+                let items = res.data;
+        
+                this.setState({
+                  items: items
+                });
+              });
+        });
+    };
+
+    handleAddStaff = () => {
+
+    };
+
     fetchOrders = () => {
       getOrders((res) => {
         console.log(res.data);
+    
 
         let orders = res.data;
 
@@ -81,7 +99,7 @@ export default class Admin extends Component {
         if (this.state.tab == 0){
             page = <div>
                 <div style = {{width: "140%", marginLeft: "-20%", display: "flex", zIndex: "0"}}>
-                    <div style = {{width: "50%", zIndex: "-1"}}>
+                    <div style = {{width: "50%", zIndex: "1000"}}>
                         {this.state.currentOrders.map((order) => {
                             return <Order data = {order} availableItems={this.state.items} fulfillOrder={this.fulfillOrderIntermediate} cancelOrder={this.cancelOrderIntermediate}></Order>
                         })}
@@ -99,7 +117,7 @@ export default class Admin extends Component {
         }else if (this.state.tab == 1){
             page = <div>
                 <div style = {{width: "100%"}}>
-                    <ItemPage></ItemPage>
+                    <ItemPage uploadItemCallback = {this.handleAddItem}></ItemPage>
                 </div>
             </div>
         }
@@ -205,7 +223,7 @@ class ItemPage extends Component {
     
     toggleAddItem(){
         this.setState({
-            addingItem: true
+            addingItem: ! this.state.addingItem
         })
     }
 
@@ -215,7 +233,7 @@ class ItemPage extends Component {
         })
     }
 
-    componentWillMount(){
+    componentDidMount(){
         getItems((res) => {
             console.log(res.data);
 
@@ -225,18 +243,21 @@ class ItemPage extends Component {
             });
         });
     }
-
+//{this.state.addingItem && <ItemCreateForm></ItemCreateForm>}
     render() {
-        return <div style = {{}}>
-            {this.state.items.map((member) => {
-                return <div style = {{width: "45%", marginLeft: "2.5%", height: "140px", border: "3px #1c5bff solid", borderRadius: "15px", padding: "15px"}}>
-                    <Staff data = {member}></Staff>
-                    <Button content = 'export orders' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} onClick = {this.showAddMember}></Button>
+        return <div style = {{display: "flex", flexWrap: "wrap"}}>
+            {this.state.items.map((item) => {
+                return <div style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: "#1c5bff 3px solid", borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
+                    <Item data = {item}></Item>
+                    
 
-                    {this.state.addingItem && <ItemCreateForm></ItemCreateForm>}
+                    
                 </div>
             })}
+
+            <Button content = 'add item' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} callback = {this.toggleAddItem}></Button>
            
+           {this.state.addingItem && <ItemCreateForm uploadItemCallback = {this.props.uploadItemCallback}></ItemCreateForm>}
         </div>
     }
 }
@@ -251,10 +272,69 @@ class Staff extends Component {
     }
 }
 
+class Item extends Component {
+    render() {
+        return <div>
+            <div style = {{fontSize: "20px"}}>{this.props.data.name}</div>
+            <div style = {{fontSize: "15px", color: "#ccc"}}>{this.props.data.description}</div>
+        </div>
+    }
+}
+
 class StaffCreateForm extends Component {
     render () {
         return <div className = "z-depth-3" style = {{position: "fixed", top: "15%", left: "15%", width: "70%", height: "70%", background: "white", padding: "30px", zIndex: "10000", borderRadius: "15px"}}>
             <div style = {{width: "100%", textAlign: "center", color: "#1c5bff", fontSize: "50px"}}>new staff</div>
+        </div> 
+    }
+}
+
+class ItemCreateForm extends Component {
+    constructor (props){
+        super(props);
+
+        this.state = {
+            "name" : "",
+            "description" : "",
+            "category" : "",
+            "price" : ""
+        }
+
+        this.file = React.createRef()
+    }
+;
+
+    handleAddItem = () =>{
+        var name = this.state.name;
+        var description = this.state.description;
+        var category = this.state.category;
+        var price = this.state.price;
+        var file = this.file.current.files[0];
+
+        console.log(this.state);
+        console.log(price);
+
+        this.props.uploadItemCallback(name, description, price, category, file, (data) => {
+            console.log(data);
+        });
+    }
+
+    handleChange = (event, key) => {
+        this.setState({
+            [key]: event.target.value
+        })
+    }
+
+    render () {
+        return <div className = "z-depth-3" style = {{position: "fixed", top: "15%", left: "15%", width: "70%", height: "70%", background: "white", padding: "30px", zIndex: "10000", borderRadius: "15px"}}>
+            <div style = {{width: "100%", textAlign: "center", color: "#1c5bff", fontSize: "50px", marginBottom: "50px"}}>new item</div>
+            <input name = 'name' type = 'text' placeholder = 'name' className = 'form-input' onChange = {(e) => this.handleChange(e, 'name')}></input>
+            <input name = 'name' type = 'text' placeholder = 'description' className = 'form-input' onChange = {(e) => this.handleChange(e, 'description')}></input>
+            <input name = 'name' type = 'text' placeholder = 'category' className = 'form-input' onChange = {(e) => this.handleChange(e, 'category')}></input>
+            <input name = 'name' type = 'text' placeholder = 'price' className = 'form-input' onChange = {(e) => this.handleChange(e, 'price')}></input>
+            <input name = 'name' type = 'file' placeholder = 'Click to upload file' className = 'form-input' ref = {this.file}></input>
+
+            <Button style = {{width: "fit-content", color : "white", background : "#1c5bff"}} content = "add item" callback = {this.handleAddItem}></Button>
         </div> 
     }
 }
@@ -291,7 +371,7 @@ class StaffCreateForm extends Component {
 
         console.log(itemNames);
         
-        return <div style = {{position: "relative", width: "70%", height: "fit-content", minHeight: "140px", background: "white", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
+        return <div style = {{position: "relative", width: "70%", height: "fit-content", minHeight: "140px", background: "white", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px", zIndex: "0"}}>
           <div>
             <div style = {{fontSize: "20px", color: "black"}}>{this.props.data.user.name}: {new Buffer(this.props.data._id.toString(), 'hex').toString('base64').substring(0, 8)}</div>
               {
@@ -300,11 +380,15 @@ class StaffCreateForm extends Component {
                 })
               }
              <div style = {{fontSize: "20px", color: "#bbb", position: "absolute", top: "15px", right: "25px"}}>{moment(parseInt(timestamp, 16) * 1000).fromNow()}</div>
-           
-             <div className = "cancel-order-button" style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", zIndex: 1000000, border: "3px #f05056 solid", borderRadius: "15px", zIndex: '5'}} onClick = {() => {this.props.cancelOrder(this.props.data._id)}}>
+             
+             <div style = {{position: "absolute", right: "0px", top: "-3px", background: "white", height: "calc(100% + 6px)", width: "90px", zIndex: 1000000, borderRadius: "0px 15px 15px 0px", border: "3px solid #527aff", borderLeftStyle: "none", zIndex: '-1'}} >
+                
+             </div>
+
+             <div className = "cancel-order-button" style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", zIndex: 1000000, border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-2'}} onClick = {() => {this.props.cancelOrder(this.props.data._id)}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "10px", color: "white", width: "fit-content"}}>close</div>
              </div>
-             <div className = "fulfill-order-button" style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '6'}} onClick = {() => {this.props.fulfillOrder(this.props.data._id)}}>
+             <div className = "fulfill-order-button" style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '-3'}} onClick = {() => {this.props.fulfillOrder(this.props.data._id)}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "0px", color: "white", width: "fit-content"}}>check</div>
              </div>
              
