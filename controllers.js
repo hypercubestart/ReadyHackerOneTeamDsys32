@@ -80,31 +80,29 @@ exports.placeOrder = async (req, res) => {
 
   if (!items) return res.status(400);
 
-  try {
-    var promises = items.map(function(item) {
-      return new Promise(function(resolve, reject) {
-        Item.findOne({_id: item._id}, function(itemObject) {
-          resolve(itemObject.price * item.quantity);
-        })
+  var promises = items.map(function(item) {
+    return new Promise(function(resolve, reject) {
+      Item.findOne({_id: item._id}, function(itemObject) {
+        resolve(itemObject.price * item.quantity);
       })
     })
-    Promise.all(promises).then(function(values) {
-      return values.reduce((a, b) => a + b, 0)
-    }).then(totalPrice => {
-      var orderObject = new Order({
-        user: user._id,
-        items: items,
-        totalPrice: totalPrice,
-        orderTime: orderTime
-      });
-      return orderObject.save()
-    }).function(order) {
-      // TODO: sockets to the staff
-      res.status(200).json(order);
+  })
+  Promise.all(promises).then(function(values) {
+    return values.reduce((a, b) => a + b, 0)
+  }).then(totalPrice => {
+    var orderObject = new Order({
+      user: user._id,
+      items: items,
+      totalPrice: totalPrice,
+      orderTime: orderTime
     });
-  } catch (err) {
+    return orderObject.save()
+  }).then(order => {
+    // TODO: sockets to the staff
+    res.status(200).json(order);
+  }).catch(err => {
     res.status(500).end();
-  }
+  });
 }
 
 exports.fetchUser = async (req, res) => {
