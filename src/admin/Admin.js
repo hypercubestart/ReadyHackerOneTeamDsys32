@@ -3,7 +3,7 @@ import {OrderStep} from "../order/Order";
 import React, { Component } from 'react'
 import io from "socket.io";
 
-import { getOrders, getItems, getStaff } from '../api';
+import { getOrders, getItems, getStaff, cancelOrder } from '../api';
 import Button from "../components/Button";
 import moment from 'moment';
 
@@ -54,12 +54,19 @@ export default class Admin extends Component {
                         })}
                     </div>
                     <div style = {{width: "50%"}} orders = {this.state.currentOrders}></div>
+                     <Button content = 'export orders' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} onClick = {this.showAddMember}></Button>
                 </div>
             </div>;
         }else if (this.state.tab == 2){
             page = <div>
                 <div style = {{width: "100%"}}>
                     <StaffPage></StaffPage>
+                </div>
+            </div>
+        }else if (this.state.tab == 3){
+            page = <div>
+                <div style = {{width: "100%"}}>
+                    <ItemPage></ItemPage>
                 </div>
             </div>
         }
@@ -151,6 +158,57 @@ class StaffPage extends Component {
     }
 }
 
+class ItemPage extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            items: [],
+            addingItem: false
+        }
+    
+        this.showAddItem = this.showAddItem.bind(this);
+    }
+    
+    showAddItem(){
+        this.setState({
+            addingItem: true
+        })
+    }
+
+    hideAddItem() {
+        this.setState({
+            addingItem: false
+        })
+    }
+
+    componentWillMount(){
+        getItems((res) => {
+            console.log(res.data);
+
+            let items = res.data;
+            this.setState({
+                items: items
+            });
+        });
+    }
+
+    render() {
+        return <div style = {{}}>
+            {this.state.staff.map((member) => {
+                return <div style = {{width: "45%", marginLeft: "2.5%", height: "140px", border: "3px #1c5bff solid", borderRadius: "15px", padding: "15px"}}>
+                    <Staff data = {member}></Staff>
+                    <Button content = 'export orders' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} onClick = {this.showAddMember}></Button>
+
+                    {this.state.addingMember && <StaffCreateForm></StaffCreateForm>}
+                </div>
+            })}
+           
+        </div>
+    }
+}
+
+
 class Staff extends Component {
     render() {
         return <div>
@@ -196,17 +254,17 @@ class StaffCreateForm extends Component {
 
         console.log(itemNames);
         
-        return <div style = {{position: "relative", width: "100%", height: "140px", background: "white", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
+        return <div style = {{position: "relative", width: "100%", height: "fit-content", minHeight: "140px", background: "white", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
           <div>
             <div style = {{fontSize: "20px", color: "black"}}>{this.props.data.user.name}: {new Buffer(this.props.data._id.toString(), 'hex').toString('base64').substring(0, 8)}</div>
               {
                 itemNames.map((name) => {
-                  <div style = {{fontSize: "20px", color: "#bbb", position: "absolute", top: "15px", right: "25px"}}>{name}</div>
+                  return <div style = {{fontSize: "20px", color: "#bbb"}}>{name}</div>
                 })
               }
              <div style = {{fontSize: "20px", color: "#bbb", position: "absolute", top: "15px", right: "25px"}}>{moment(parseInt(timestamp, 16) * 1000).fromNow()}</div>
            
-             <div style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-1'}}>
+             <div style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-1'}} onClick = {() => {}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "10px", color: "white", width: "fit-content"}}>close</div>
              </div>
              <div style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '-2'}}>
