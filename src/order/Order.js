@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '../components/Button';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { Link } from 'react-router-dom';
 import {Motion, spring, presets} from 'react-motion';
@@ -62,6 +63,7 @@ class Order extends Component {
         return;
       }
     }
+    toast('Select something before you check out!');
   }
 
   changeQuantity(event, id, inc, fromItem){
@@ -156,7 +158,7 @@ class Order extends Component {
       {itemGroups}
 
       <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button>
-
+      <ToastContainer />
     </div>
   }
 }
