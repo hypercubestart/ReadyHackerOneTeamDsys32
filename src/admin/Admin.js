@@ -112,7 +112,7 @@ export default class Admin extends Component {
                 <div style = {{position: "fixed", left: '0', top: '0', width: "100%", height: "220px", background: "white", zIndex: "100"}}></div>
                 <div style = {{width: "140%", marginLeft: "-20%", display: "flex", zIndex: "0"}}>
                     <div style = {{width: "50%", zIndex: "10"}}>
-                        {this.state.currentOrders.map((order) => {
+                        {this.state.currentOrders.reverse().map((order) => {
                             if (order.status == 0){
                                 return <Order status = {order.status} data = {order} availableItems={this.state.items} fulfillOrder={this.fulfillOrderIntermediate} cancelOrder={this.cancelOrderIntermediate}></Order>
                             }else{
