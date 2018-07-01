@@ -14,7 +14,7 @@ export default class Checkout extends Component {
   }
 
   render() {
-    
+    <div>This is checkout lmao</div>
   }
 
 }

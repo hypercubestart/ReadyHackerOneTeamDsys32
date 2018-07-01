@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../components/Button';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
 
 import { Link } from 'react-router-dom';
 import {Motion, spring, presets} from 'react-motion';
@@ -55,15 +54,7 @@ class Order extends Component {
   }
 
   handleCheckOut() {
-    var items = this.state.items.slice();
-
-    for (var i = 0; i < items.length; i++) {
-      if (items[i].quantity > 0) {
-        this.setState({step: 1});
-        return;
-      }
-    }
-    toast('Select something before you check out!');
+    this.setState({step: 1});
   }
 
   changeQuantity(event, id, inc, fromItem){
@@ -136,7 +127,7 @@ class Order extends Component {
       })
 
       return <div style = {{display: "flex", flexWrap: "wrap", position: "relative", marginBottom: "25px"}}>
-        <div style = {{position: "absolute", width: "15%", marginLeft: "-15%", fontSize: "20px"}}>{group}</div>
+        <div style = {{position: "absolute", width: "25%", marginLeft: "-30%", fontSize: "20px", textAlign: "right"}}>{group}</div>
         {itemsInGroup}
       </div>
     })
@@ -152,13 +143,24 @@ class Order extends Component {
         <OrderStep content = "confirmation" selected = {this.state.step == 2}></OrderStep>
       </div>}
       </Motion>
+      
 
       <div style = {{height: "70px"}}></div>
 
-      {itemGroups}
+      <div style = {{position: "relative"}}>
+        <div style = {{position: "absolute", top: "0", left: "0", width: "100%"}}>
+          {itemGroups}
 
-      <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button>
-      <ToastContainer />
+          <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button>
+        </div>
+
+        <div style = {{position: "absolute", top: "0", left: "148.8%", width: "100%"}}>
+          {itemGroups}
+
+          <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button>
+        </div>
+      </div>
+
     </div>
   }
 }
