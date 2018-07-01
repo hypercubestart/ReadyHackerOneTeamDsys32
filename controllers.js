@@ -85,7 +85,7 @@ exports.placeOrder = async (req, res) => {
         if (err) {
           reject(err)
         } else {
-          resolve(itemObject.price * item.quantity);
+        resolve(itemObject.price * item.quantity);
         }
       })
     })
