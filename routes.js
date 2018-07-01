@@ -10,6 +10,7 @@ module.exports = (app) => {
   app.route('/user/login/').post(bonnieMiddleware.authenticate).post(bonnieController.login);
   app.route('/user/register/').post(bonnieController.register);
   app.route('/user/logout/').post(bonnieMiddleware.verifySession).post(bonnieController.logout);
+  app.route('/user/authenticated/').post(bonnieMiddleware.verifySession).post((req, res) => res.status(200).end());
 
   
   app.route('/items/get/').get(bonnieMiddleware.verifySession).get(bonnieController.fetchItems);
