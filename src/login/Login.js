@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import axios from 'axios';
+import { login } from '../api';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 
@@ -37,23 +37,12 @@ class Login extends Component {
   async handleLogin(){
     this.loginForm.current.submit();
     
-    try {
-      let email = this.state.email;
-      let password = this.state.password;
+    let email = this.state.email;
+    let password = this.state.password;
 
-      let response = await axios.post(BASE_URL + "/user/login", 
-        {
-          email: email,
-          password: password
-        }
-      );
-
+    login(email, password, (response) => {
       console.log(response);
-
-    } catch (error) {
-      console.log(error + " in App.LoginCard.handleLogin");
-    }
-
+    });
   }
 
   render() {

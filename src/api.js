@@ -15,5 +15,32 @@ var getItems = (callback) => {
   });
 }
 
+var register = (name, email, password, callback) => {
+  const url = BASE_URL + '/user/register';
 
-export { getItems };
+  axios.post(url, {
+    name: name,
+    email: email,
+    password: password
+  }, {withCredentials: true}).then((res) => {
+    callback(res);
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+var login = (email, password, callback) => {
+  const url = BASE_URL + '/user/login';
+
+  axios.post(url, {
+    email: email,
+    password: password
+  }, {withCredentials: true}).then((res) => {
+    callback(res);
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+
+export { getItems, register, login };

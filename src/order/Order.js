@@ -28,33 +28,20 @@ class Order extends Component {
   async componentWillMount(){
     console.log("component WILL mount");
 
-    try{
-      /*
-      let response = await axios(//$.get(BASE_URL + "/item/get"); /*
-        {
-          method: 'get',
-          url: BASE_URL + '/item/get',
-          withCredentials: true
-      });
-      */
-      getItems((response) => {
-        var items = [];
-        response.data.forEach((item) => {
-          items.push({
-            itemId: item._id,
-            category: item.category,
-            title: item.name,
-            description: item.description,
-            price: item.price,
-            quantity: 0
-          });
+    getItems((response) => {
+      var items = [];
+      response.data.forEach((item) => {
+        items.push({
+          itemId: item._id,
+          category: item.category,
+          title: item.name,
+          description: item.description,
+          price: item.price,
+          quantity: 0
         });
-  
-        this.setState({items: items});
       });
-    } catch (error) {
-      console.log(error + " in app.Order.ComponentWillMount");
-    }
+      this.setState({items: items});
+    });
   }
 
   handleCheckOut() {

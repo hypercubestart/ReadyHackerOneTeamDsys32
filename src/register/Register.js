@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../components/Button';
-import axios from 'axios';
+import { register } from '../api';
 
 import { Link } from 'react-router-dom';
 import {Motion, spring, presets} from 'react-motion';
@@ -57,16 +57,9 @@ class Register extends Component {
     try {
       console.log(name + " " + email + " " + password);
 
-      let response = await axios.post(BASE_URL + "/user/register", 
-        {
-          name: name,
-          email: email,
-          password: password
-        }
-      );
-
-      console.log(response);
-
+      register(name, email, password, (response) => {
+        console.log(response);
+      });
     } catch (error) {
       console.log(error + " in App.LoginCard.handleLogin");
     }
