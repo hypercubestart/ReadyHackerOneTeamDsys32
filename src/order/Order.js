@@ -58,6 +58,12 @@ class Order extends Component {
     toast('Select something before you check out!');
   }
 
+  handleConfirm() {
+    this.setState({
+      step: 2
+    })
+  }
+
   changeQuantity(event, id, inc, fromItem){
     event.stopPropagation();
 
@@ -139,7 +145,8 @@ class Order extends Component {
           <div className = "order-page" >
             {itemGroups}
 
-            <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button>
+            {this.state.step == 0 ? <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button> : <div><Button style = {{width: "fit-content", color : "#1c5bff", border: "3px solid", borderColor : "#1c5bff", position: "fixed", bottom: "50px", right: "300px"}} content = "back" callback = {() => this.handleCheckOut()}></Button><Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px", border: "3px solid #1c5bff"}} content = "finish" callback = {() => this.handleConfirm()}></Button></div>}
+            
           </div>
         </div>
 
@@ -181,7 +188,7 @@ class Item extends Component {
       borderString = '3px solid #527aff';
     }
     
-    return <div onClick = {(event) => this.props.changeQuantityCallback(event, this.props.data.itemId, 1, 1, true)} style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px"}}>
+    return <div onClick = {(event) => this.props.changeQuantityCallback(event, this.props.data.itemId, 1, 1, true)} style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
       <div>
         <ItemTitle content = {this.props.data.title}></ItemTitle>
         <ItemDescription content = {this.props.data.description}></ItemDescription>
@@ -215,7 +222,11 @@ class ItemPrice extends Component {
 
 class ItemTotalPrice extends Component {
   render() {
-    return <div style = {{fontSize: "20px", color: "rgb(26, 228, 144)", position: "absolute", bottom: "15px", right: "25px"}}>{this.props.price * this.props.quantity}</div>
+    if (this.props.quantity > 0){
+      return <div style = {{fontSize: "20px", color: "rgb(26, 228, 144)", position: "absolute", bottom: "15px", right: "25px"}}>{this.props.price * this.props.quantity}</div>
+    }else{
+      return <div></div>
+    }
   }
 }
 
