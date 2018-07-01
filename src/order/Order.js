@@ -12,7 +12,7 @@ import {Motion, spring, presets} from 'react-motion';
 
 import $ from 'jquery';
 
-const BASE_URL = "http://10.0.99.62:3001" //"https://bonnie-api.dsys32.com";
+//const BASE_URL = "http://10.0.99.62:3001" //"https://bonnie-api.dsys32.com";
 
 class Order extends Component {
   constructor(props){

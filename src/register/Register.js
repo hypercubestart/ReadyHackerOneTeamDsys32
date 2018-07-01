@@ -5,7 +5,7 @@ import { register } from '../api';
 import { Link } from 'react-router-dom';
 import {Motion, spring, presets} from 'react-motion';
 
-const BASE_URL = "http://10.0.99.62:3001" //"http://10.0.99.191:3000"; ;
+//const BASE_URL = "http://10.0.99.62:3001" //"http://10.0.99.191:3000"; ;
 
 class Register extends Component {
   constructor(props){

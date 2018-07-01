@@ -4,8 +4,6 @@ import { login, loginStaff } from '../api';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 
-const BASE_URL = "https://bonnie-api.dsys32.com"; //"http://10.0.99.62:3001"
-
 class Login extends Component {
   constructor(props){
     super(props);
