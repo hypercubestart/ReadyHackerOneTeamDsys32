@@ -17,8 +17,6 @@ class OrderPage extends Component {
       items: [],
       step: 0
     };
-
-    this.changeQuantity = this.changeQuantity.bind(this);
   }
 
   async componentWillMount(){
@@ -39,19 +37,34 @@ class OrderPage extends Component {
           category: item.category,
           title: item.name,
           description: item.description,
-          price: item.price
+          price: item.price,
+          quantity: 0
         });
       });
 
       this.setState({items: items});
-      
+
     } catch (error) {
       console.log(error + " in app.OrderPage.ComponentWillMount");
     }
   }
 
   changeQuantity(id, inc){
+    var itemsCopy = this.state.items.slice();
 
+    for (var i = 0; i < itemsCopy.length; i++) {
+      var item = itemsCopy[i];
+      if (item.itemId == id) {
+        itemsCopy[i].quantity += inc;
+        break;
+      }
+    }
+
+    this.setState(
+      {
+        items: itemsCopy
+      }
+    );
   }
   
   /*
@@ -149,7 +162,7 @@ class ItemPrice extends Component {
 class ItemQuantity extends Component {
   render() {
     return <div style = {{fontSize: "17px", color: "white", position: "absolute", bottom: "15px", left: "120px", background: "#1c5bff", padding: "0px 7px 5px 7px", borderRadius: "30px"}}>
-      <span style = {{marginRight: "15px"}} onClick = {this.props.callback}>-</span> {this.props.content} <span style = {{marginLeft: "15px"}}>+</span>
+      <span style = {{marginRight: "15px"}}>-</span> {this.props.content} <span style = {{marginLeft: "15px"}}>+</span>
     </div>
   }
 }
