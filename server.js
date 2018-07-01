@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 const routes = require('./routes');
 const app = express();
 const schemas = require('./schemas');
-const atuh = require('./auth');
+const auth = require('./auth');
 const Staff = schemas.Staff;
 const cors = require('cors');
 const port = 3000;
@@ -28,7 +28,7 @@ db.once('open', async () => {
 
   // no staff, create root
   if (staff.length === 0) {
-    auth.hash(rootAdminPass, (hash) => {
+    auth.hash(defaultStaffPass, async (hash) => {
       try {
         var newRootStaff = new Staff({
           name: 'admin',
