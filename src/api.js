@@ -95,7 +95,7 @@ var cancelOrder = (id, callback) => {
 }
 
 var getOrders = (callback) => {
-  const url = BASE_URL + '/order/export';
+  const url = BASE_URL + '/order/get';
 
   axios.get(url, {withCredentials: true}).then((res) => callback(res)).catch((err) => console.log(err));
 }
@@ -137,7 +137,22 @@ var logoutStaff = (callback) => {
 }
 
 var addItem = (name, description, price, category, picture, callback) => {
+  var form = new FormData();
 
+  form.append("name", name);
+  form.append("description", description);
+  form.append("price", price);
+  form.append("category", category);
+  form.append("picture", picture);
+
+  axios({
+    method: 'post',
+    url: BASE_URL + '/item/add',
+    data: form,
+    config: { headers: {'Content-Type': 'multipart/form-data' }},
+    withCredentials: true,
+
+  }).then(callback);
 }
 
 var removeItem = (id, callback) => {

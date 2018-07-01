@@ -48,6 +48,8 @@ export default class Admin extends Component {
                 this.setState({
                   items: items
                 });
+
+                this.forceUpdate();
               });
         });
     };
