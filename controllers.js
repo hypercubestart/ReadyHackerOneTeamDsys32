@@ -61,7 +61,7 @@ exports.register = (req, res) => {
       else {
         req.session._id = savedUser._id;
         req.session.authenticated = true;
-        res.status(200).json(req.session);
+        res.status(200).redirect('https://bonnie.dsys32.com/order/');
       }
     });
   });
@@ -233,7 +233,7 @@ exports.cancelOrder = async (req, res) => {
 
 exports.exportOrders = async (req, res) => {
   try {
-    let orders = await Order.find({}).exec();
+    let orders = await Order.find({}).populate('user').exec();
 
     res.status(200).json(orders);
   } catch (err) {
