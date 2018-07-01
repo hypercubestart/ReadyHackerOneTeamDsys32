@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../components/Button';
-import { getItems } from '../api';
+import { getItems, placeOrder } from '../api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -73,9 +73,13 @@ class Order extends Component {
   }
 
   handleConfirm() {
-    this.setState({
-      step: 2
-    })
+    placeOrder(this.state.items, (response) => {
+      if (response.status == 200) {
+        this.setState({
+          step: 2
+        });
+      }
+    });
   }
 
   changeQuantity(event, id, inc, fromItem){
