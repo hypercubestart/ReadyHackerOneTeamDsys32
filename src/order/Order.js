@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../components/Button';
-import api from '../api';
+import { getItems } from '../api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -37,22 +37,21 @@ class Order extends Component {
           withCredentials: true
       });
       */
-     let response = await api.getItems;
-
-      var items = [];
-      response.data.forEach((item) => {
-        items.push({
-          itemId: item._id,
-          category: item.category,
-          title: item.name,
-          description: item.description,
-          price: item.price,
-          quantity: 0
+      getItems((response) => {
+        var items = [];
+        response.data.forEach((item) => {
+          items.push({
+            itemId: item._id,
+            category: item.category,
+            title: item.name,
+            description: item.description,
+            price: item.price,
+            quantity: 0
+          });
         });
+  
+        this.setState({items: items});
       });
-
-      this.setState({items: items});
-
     } catch (error) {
       console.log(error + " in app.Order.ComponentWillMount");
     }
