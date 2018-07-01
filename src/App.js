@@ -12,6 +12,7 @@ export default class App extends React.Component {
         return (
             <Router>
                 <div style = {{height: '100%', width: '100%'}}>
+                    <Route exact path = "/" component = {Login} />
                     <Route exact path = "/login" component = {Login} />
                     <Route exact path = "/register" component = {Register} />
                     <Route exact path = "/order" component = {Order} />
