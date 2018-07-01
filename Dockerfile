@@ -7,9 +7,9 @@ COPY . /usr/src/app
 
 # Install app dependencies
 RUN npm install
-RUN npm install http-server -g
-RUN npm run-script build
+# RUN npm install http-server -g
+# RUN npm 
 
 EXPOSE 8080
 
-CMD ["http-server", "./build/"]
+CMD ["npm", "start"]
