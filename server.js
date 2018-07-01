@@ -73,6 +73,7 @@ const sessionMiddleware = session({
     maxAge: 253402300000000,
     sameSite: false,
     path: '/',
+    domain: '.dsys32.com',
     secure: false
   },
   rolling: true,
