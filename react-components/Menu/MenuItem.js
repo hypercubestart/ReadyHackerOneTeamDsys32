@@ -49,10 +49,16 @@ export default class MenuItem extends React.Component {
                                         {"$" + this.props.item.price}
                                     </Text>
                                 </View>
-                                <Image
-                                    style={styles.itemImage}
-                                    source={{uri: 'https://s-media-cache-ak0.pinimg.com/736x/10/a4/39/10a439cf845f65db31bb44f14a5655a8.jpg'}}
-                                />
+                                <View style={{alignItems: 'flex-end'}}>
+                                    <Image
+                                        style={styles.itemImage}
+                                        source={{uri: 'https://s-media-cache-ak0.pinimg.com/736x/10/a4/39/10a439cf845f65db31bb44f14a5655a8.jpg'}}
+                                    />
+                                    {
+                                        this.props.recommended && 
+                                        <MaterialIcons name="star" />
+                                    }
+                                </View>
                             </View>
                         </View>
                     </TouchableOpacity>

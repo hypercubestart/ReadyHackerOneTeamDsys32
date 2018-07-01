@@ -11,19 +11,35 @@ export default class Menu extends React.Component {
         this.state = {
             isLoadingMenu: true,
             menu: [],
-            order: {}
+            order: {},
+            user: {}
         }
 
         this.onSelectItem = this.onSelectItem.bind(this)
         this.increaseQuantity = this.increaseQuantity.bind(this)
         this.decreaseQuantity = this.decreaseQuantity.bind(this)
         this.goToCheckOut = this.goToCheckOut.bind(this)
+        this.inPreviousOrder = this.inPreviousOrder.bind(this)
     }
 
     goToCheckOut() {
         this.props.navigation.navigate('Checkout', {
             order: this.state.order
         })
+    }
+
+    inPreviousOrder(item_id) {
+        if (this.state.user.previousOrders === undefined || this.state.user.previousOrders.length === 0) return false;
+        var mostRecentOrder = this.state.user.previousOrders[this.state.user.previousOrders.length - 1]
+
+        if (mostRecentOrder === null) return false
+
+        for (var i = 0 ; i < mostRecentOrder.items.length; i++) {
+            if (mostRecentOrder.items[i]._id === item_id) {
+                return true
+            }
+        }
+        return false
     }
 
     onSelectItem(item) {
@@ -68,11 +84,13 @@ export default class Menu extends React.Component {
     }
 
     componentDidMount() {
-        this.getMenu().then(function(responseJson) {
+        Promise.all([this.getMenu(), this.getUserInfo()]).then(function(values) {
             this.setState({
                 isLoadingMenu: false,
-                menu: responseJson
+                menu: values[0],
+                user: values[1]
             })
+            console.log(values[0])
         }.bind(this))
     }
 
@@ -80,6 +98,18 @@ export default class Menu extends React.Component {
         try {
             let response = await fetch(
                 "https://bonnie-api.dsys32.com/item/get/"
+            );
+            let responseJson = await response.json();
+            return responseJson;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async getUserInfo() {
+        try {
+            let response = await fetch(
+                "https://bonnie-api.dsys32.com/user/get/"
             );
             let responseJson = await response.json();
             return responseJson;
@@ -96,6 +126,7 @@ export default class Menu extends React.Component {
         return(
             <View style={styles.container}>
                 <Spinner visible={this.state.isLoadingMenu}/>
+
                 <View style={styles.header}>
                     <Text style={globalStyles.headerText}>
                         menu
@@ -109,11 +140,11 @@ export default class Menu extends React.Component {
                     renderItem={({item, index}) => {
 
                             let groupString = ""
-                            if (index === menu.Appetizers.length - 1) {
+                            if (index === 0) {
                                 groupString = "appetizers"
-                            } else if (index === menu.Appetizers.length + menu.Entrees.length - 1) {
+                            } else if (index === menu.Appetizers.length) {
                                 groupString = "entrees"
-                            } else if (index === menu.Appetizers.length + menu.Entrees.length + menu.Desserts.length - 1) {
+                            } else if (index === menu.Appetizers.length + menu.Entrees.length) {
                                 groupString = "desserts"
                             } 
 
@@ -124,7 +155,9 @@ export default class Menu extends React.Component {
                                             onSelectItem={this.onSelectItem}
                                             quantity={this.state.order[item._id].quantity}
                                             increaseQuantity={this.increaseQuantity}
-                                            decreaseQuantity={this.decreaseQuantity}/>
+                                            decreaseQuantity={this.decreaseQuantity}
+                                            recommended={this.inPreviousOrder(item._id)}
+                                            />
                             }
                             return <MenuItem item={item} 
                                             startGroup={groupString} 
@@ -132,11 +165,13 @@ export default class Menu extends React.Component {
                                             onSelectItem={this.onSelectItem}
                                             increaseQuantity={this.increaseQuantity}
                                             decreaseQuantity={this.decreaseQuantity}
+                                            recommended={this.inPreviousOrder(item._id)}
                                             />
                             
                         }
                     }
                 />
+            
                 <View style={{alignItems: 'flex-end'}}>
                     <TouchableOpacity style={[globalStyles.roundedButton, styles.nextButton, {backgroundColor: this.isOrderEmpty() ? '#7f8c8d' : '#1C5BFF'}]} onPress={this.goToCheckOut} disabled={this.isOrderEmpty()}>
                         <Text style={styles.checkOutText}>
