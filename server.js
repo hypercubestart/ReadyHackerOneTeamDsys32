@@ -5,7 +5,8 @@ const express = require('express');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
-const bodyParser = require('express-busboy');
+const bodyParser = require('body-parser');
+const busboy = require('express-busboy');
 const routes = require('./routes');
 const app = express();
 const schemas = require('./schemas');
@@ -92,7 +93,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-bodyParser.extend(app, {
+busboy.extend(app, {
   upload: true
 });
 
