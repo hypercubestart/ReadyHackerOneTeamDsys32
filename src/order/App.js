@@ -51,7 +51,9 @@ class OrderPage extends Component {
     }
   }
 
-  changeQuantity(id, inc, cap){
+  changeQuantity(event, id, inc, fromItem){
+    event.stopPropagation();
+
     var itemsCopy = this.state.items.slice();
 
     for (var i = 0; i < itemsCopy.length; i++) {
@@ -59,8 +61,8 @@ class OrderPage extends Component {
       if (item.itemId == id) {
         if (inc == -1 && item.quantity == 0) return;
         itemsCopy[i].quantity += inc;
-        if (cap && itemsCopy[i].quantity > cap){
-          itemsCopy[i].quantity = cap;
+        if (fromItem && itemsCopy[i].quantity > 1){
+          itemsCopy[i].quantity = 1;
         }
         break;
       }
@@ -71,6 +73,7 @@ class OrderPage extends Component {
         items: itemsCopy
       }
     );
+    
     console.log("CHANGING " + id + " " + inc);
   }
   
@@ -144,7 +147,7 @@ class Item extends Component {
       borderString = '3px solid #527aff';
     }
     
-    return <div onClick = {() => this.props.callback(this.props.data.itemId, 1, 1)} style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px"}}>
+    return <div onClick = {(event) => this.props.callback(event, this.props.data.itemId, 1, 1, true)} style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px"}}>
       <div>
         <ItemTitle content = {this.props.data.title}></ItemTitle>
         <ItemDescription content = {this.props.data.description}></ItemDescription>
@@ -177,9 +180,9 @@ class ItemQuantity extends Component {
   render() {
     if (this.props.content != 0){
       return <div className = "unselectable" style = {{fontSize: "17px", color: "white", position: "absolute", bottom: "15px", left: "120px", background: "#1c5bff", padding: "0px 7px 5px 7px", borderRadius: "30px"}}>
-        <span style = {{marginRight: "15px", cursor: "pointer"}} onClick = {() => this.props.callback(this.props.itemId, -1)}>-</span>
+        <span style = {{marginRight: "15px", cursor: "pointer"}} onClick = {(event) => this.props.callback(event, this.props.itemId, -1)}>-</span>
         {this.props.content} 
-        <span style = {{marginLeft: "15px", cursor: "pointer"}} onClick = {() => this.props.callback(this.props.itemId, 1)}>+</span>
+        <span style = {{marginLeft: "15px", cursor: "pointer"}} onClick = {(event) => this.props.callback(event, this.props.itemId, 1)}>+</span>
       </div>
     }else{
       return <div></div>
