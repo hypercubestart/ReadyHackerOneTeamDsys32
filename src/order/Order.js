@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../components/Button';
-import axios from 'axios';
+import api from '../api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,12 +29,15 @@ class Order extends Component {
     console.log("component WILL mount");
 
     try{
+      /*
       let response = await axios(//$.get(BASE_URL + "/item/get"); /*
         {
           method: 'get',
           url: BASE_URL + '/item/get',
           withCredentials: true
       });
+      */
+     let response = await api.getItems;
 
       var items = [];
       response.data.forEach((item) => {
