@@ -12,7 +12,6 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const User = schemas.User;
 const Item = schemas.Item;
 const Order = schemas.Order;
-const Staff = schemas.Staff;
 
 const VI = (...parameters) => {
   for (var i = 0; i < parameters.length; i++) {
@@ -126,10 +125,11 @@ exports.registerStaff = async (req, res) => {
   if (!VI(name, email, password)) return res.status(400).end();
 
   auth.hash(password, async (hash) => {
-    var staffObject = new Staff({
+    var staffObject = new User({
       name: name,
       email: email,
-      passHashed: hash
+      passHashed: hash,
+      admin: true
     });
 
     try {
@@ -143,7 +143,7 @@ exports.registerStaff = async (req, res) => {
 
 exports.getStaff = async (req, res) => { 
   try {
-    var staff = await Staff.find({}).exec()
+    var staff = await User.find({admin: true}).exec()
 
     res.status(200).json(staff);
   } catch(err) {
