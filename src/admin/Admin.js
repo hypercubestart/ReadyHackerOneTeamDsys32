@@ -2,7 +2,7 @@ import {OrderStep} from "../order/Order";
 
 import React, { Component } from 'react'
 import io from "socket.io";
-import fd from 'js-file-download';
+import exportFromJSON from 'export-from-json'
 
 import { getOrders, getItems, getStaff, cancelOrder } from '../api';
 import Button from "../components/Button";
@@ -20,19 +20,10 @@ export default class Admin extends Component {
     }
 
     exportOrders = () => {
-        var parseOrder = this.state.currentOrders.map(function(order) {
-          return this.objectToArray(order)
-        }.bind(this));
-      fd(parseOrder, 'order.csv');
-    }
-
-    objectToArray = (obj) => {
-      var arr = [];
-
-      for(var key in obj) {
-        arr.push(obj[key])
-      }
-      return arr
+      const fileName = 'orders'
+      const exportType = 'json'
+ 
+      exportFromJSON({ data: this.state.currentOrders, fileName, exportType })
     }
 
     componentDidMount() {
