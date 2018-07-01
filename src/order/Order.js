@@ -4,6 +4,8 @@ import { getItems } from '../api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import Checkout from './Checkout';
+
 import { Link } from 'react-router-dom';
 import {Motion, spring, presets} from 'react-motion';
 
@@ -54,6 +56,12 @@ class Order extends Component {
       }
     }
     toast('Select something before you check out!');
+  }
+
+  handleConfirm() {
+    this.setState({
+      step: 2
+    })
   }
 
   changeQuantity(event, id, inc, fromItem){
@@ -131,7 +139,26 @@ class Order extends Component {
       </div>
     })
 
-    return <div className = "order-page">
+    let pages = <Motion defaultStyle={{x: 0}} style={{x: spring(this.state.step, presets.wobbly)}}>
+      {value => <div style = {{marginLeft: (- value.x * 130) + "%", position: "relative", width: "200%"}}>
+        <div style = {{position: "absolute", top: "0", left: "0", width: "50%"}}>
+          <div className = "order-page" >
+            {itemGroups}
+
+            {this.state.step == 0 ? <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button> : <div><Button style = {{width: "fit-content", color : "#1c5bff", border: "3px solid", borderColor : "#1c5bff", position: "fixed", bottom: "50px", right: "300px"}} content = "back" callback = {() => this.handleCheckOut()}></Button><Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px", border: "3px solid #1c5bff"}} content = "finish" callback = {() => this.handleConfirm()}></Button></div>}
+            
+          </div>
+        </div>
+
+        <div className = "order-page" style = {{position: "absolute", top: "0", left: "50%", width: "50%"}}>
+          <div className = "order-page" style = {{paddingTop: "0"}}>
+            <Checkout items = {this.state.items} changeQuantityCallback = {this.changeQuantity} cancelItemCallback = {this.cancelItem}></Checkout>
+          </div>
+        </div>    
+    </div>}
+    </Motion>
+
+    return <div>
     
       <div style = {{position: 'fixed', top: '0', left: '0', height: '150px', width: '100%', background: "white", zIndex: "1"}}></div>
 
@@ -146,19 +173,7 @@ class Order extends Component {
 
       <div style = {{height: "70px"}}></div>
 
-      <div style = {{position: "relative"}}>
-        <div style = {{position: "absolute", top: "0", left: "0", width: "100%"}}>
-          {itemGroups}
-
-          <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button>
-        </div>
-
-        <div style = {{position: "absolute", top: "0", left: "148.8%", width: "100%"}}>
-          {itemGroups}
-
-          <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button>
-        </div>
-      </div>
+      {pages}
       <ToastContainer />
     </div>
   }
@@ -173,10 +188,11 @@ class Item extends Component {
       borderString = '3px solid #527aff';
     }
     
-    return <div onClick = {(event) => this.props.changeQuantityCallback(event, this.props.data.itemId, 1, 1, true)} style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px"}}>
+    return <div onClick = {(event) => this.props.changeQuantityCallback(event, this.props.data.itemId, 1, 1, true)} style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
       <div>
         <ItemTitle content = {this.props.data.title}></ItemTitle>
         <ItemDescription content = {this.props.data.description}></ItemDescription>
+        <ItemTotalPrice price = {this.props.data.price} quantity = {this.props.data.quantity}></ItemTotalPrice>
         <ItemPrice content = {this.props.data.price}></ItemPrice>
         <ItemQuantity content = {this.props.data.quantity} itemId = {this.props.data.itemId} callback = {this.props.changeQuantityCallback}></ItemQuantity>
 
@@ -201,6 +217,16 @@ class ItemDescription extends Component {
 class ItemPrice extends Component {
   render() {
     return <div style = {{fontSize: "20px", color: "#1c5bff", position: "absolute", bottom: "15px", left: "25px"}}>{this.props.content}</div>
+  }
+}
+
+class ItemTotalPrice extends Component {
+  render() {
+    if (this.props.quantity > 0){
+      return <div style = {{fontSize: "20px", color: "rgb(26, 228, 144)", position: "absolute", bottom: "15px", right: "25px"}}>{this.props.price * this.props.quantity}</div>
+    }else{
+      return <div></div>
+    }
   }
 }
 
@@ -233,3 +259,4 @@ class OrderStep extends Component {
 }
 
 export default Order;
+export { Order, Item, ItemDescription, ItemTitle, ItemPrice, ItemTotalPrice };
