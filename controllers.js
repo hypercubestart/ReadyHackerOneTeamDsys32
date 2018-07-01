@@ -26,7 +26,7 @@ exports.login = (req, res) => {
   req.session._id = user._id;
   req.session.authenticated = true;
 
-  res.status(200).end();
+  res.status(200).redirect('/order/');
 }
 
 exports.logout = (req, res) => {
