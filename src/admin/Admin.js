@@ -80,8 +80,8 @@ export default class Admin extends Component {
         var page;
         if (this.state.tab == 0){
             page = <div>
-                <div style = {{width: "140%", marginLeft: "-20%", display: "flex"}}>
-                    <div style = {{width: "50%"}}>
+                <div style = {{width: "140%", marginLeft: "-20%", display: "flex", zIndex: "0"}}>
+                    <div style = {{width: "50%", zIndex: "-1"}}>
                         {this.state.currentOrders.map((order) => {
                             return <Order data = {order} availableItems={this.state.items} fulfillOrder={this.fulfillOrderIntermediate} cancelOrder={this.cancelOrderIntermediate}></Order>
                         })}
@@ -96,7 +96,7 @@ export default class Admin extends Component {
                     <StaffPage></StaffPage>
                 </div>
             </div>
-        }else if (this.state.tab == 3){
+        }else if (this.state.tab == 1){
             page = <div>
                 <div style = {{width: "100%"}}>
                     <ItemPage></ItemPage>
@@ -148,12 +148,13 @@ class StaffPage extends Component {
             addingMember: false
         }
     
-        this.showAddMember = this.showAddMember.bind(this);
+        this.toggleAddMember = this.toggleAddMember.bind(this);
     }
     
-    showAddMember(){
+    toggleAddMember(){
+        console.log("YAY");
         this.setState({
-            addingMember: true
+            addingMember: !this.state.addingMember
         })
     }
 
@@ -174,18 +175,17 @@ class StaffPage extends Component {
         });
     }
 
-
-
     render() {
         return <div style = {{}}>
             {this.state.staff.map((member) => {
                 return <div style = {{width: "45%", marginLeft: "2.5%", height: "140px", border: "3px #1c5bff solid", borderRadius: "15px", padding: "15px"}}>
                     <Staff data = {member}></Staff>
-                    <Button content = 'new staff' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} onClick = {this.showAddMember}></Button>
+                    <Button content = 'new staff' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} callback = {() => this.toggleAddMember()}></Button>
 
-                    {this.state.addingMember && <StaffCreateForm></StaffCreateForm>}
                 </div>
             })}
+
+            {this.state.addingMember && <StaffCreateForm></StaffCreateForm>}
            
         </div>
     }
@@ -200,10 +200,10 @@ class ItemPage extends Component {
             addingItem: false
         }
     
-        this.showAddItem = this.showAddItem.bind(this);
+        this.toggleAddItem = this.toggleAddItem.bind(this);
     }
     
-    showAddItem(){
+    toggleAddItem(){
         this.setState({
             addingItem: true
         })
@@ -228,12 +228,12 @@ class ItemPage extends Component {
 
     render() {
         return <div style = {{}}>
-            {this.state.staff.map((member) => {
+            {this.state.items.map((member) => {
                 return <div style = {{width: "45%", marginLeft: "2.5%", height: "140px", border: "3px #1c5bff solid", borderRadius: "15px", padding: "15px"}}>
                     <Staff data = {member}></Staff>
                     <Button content = 'export orders' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} onClick = {this.showAddMember}></Button>
 
-                    {this.state.addingMember && <StaffCreateForm></StaffCreateForm>}
+                    {this.state.addingItem && <ItemCreateForm></ItemCreateForm>}
                 </div>
             })}
            
@@ -253,7 +253,7 @@ class Staff extends Component {
 
 class StaffCreateForm extends Component {
     render () {
-        return <div className = "z-depth-3" style = {{position: "fixed", top: "15%", left: "15%", width: "70%", height: "70%", background: "white", padding: "30px"}}>
+        return <div className = "z-depth-3" style = {{position: "fixed", top: "15%", left: "15%", width: "70%", height: "70%", background: "white", padding: "30px", zIndex: "10000", borderRadius: "15px"}}>
             <div style = {{width: "100%", textAlign: "center", color: "#1c5bff", fontSize: "50px"}}>new staff</div>
         </div> 
     }
@@ -261,6 +261,10 @@ class StaffCreateForm extends Component {
 
   class Order extends Component {
     
+    _cancelOrder = () => {
+        cancelOrder()
+    }
+
     render () {
         var timestamp = this.props.data._id.toString().substring(0,8);
         var date = new Date(parseInt(timestamp, 16) * 1000);
@@ -297,10 +301,10 @@ class StaffCreateForm extends Component {
               }
              <div style = {{fontSize: "20px", color: "#bbb", position: "absolute", top: "15px", right: "25px"}}>{moment(parseInt(timestamp, 16) * 1000).fromNow()}</div>
            
-             <div className = "cancel-order-button" style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-1'}} onClick = {() => {this.props.cancelOrder(this.props.data._id)}}>
+             <div className = "cancel-order-button" style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", zIndex: 1000000, border: "3px #f05056 solid", borderRadius: "15px", zIndex: '5'}} onClick = {() => {this.props.cancelOrder(this.props.data._id)}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "10px", color: "white", width: "fit-content"}}>close</div>
              </div>
-             <div className = "fulfill-order-button" style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '-2'}} onClick = {() => {this.props.fulfillOrder(this.props.data._id)}}>
+             <div className = "fulfill-order-button" style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '6'}} onClick = {() => {this.props.fulfillOrder(this.props.data._id)}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "0px", color: "white", width: "fit-content"}}>check</div>
              </div>
              
