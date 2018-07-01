@@ -59,7 +59,7 @@ export default class Admin extends Component {
     }
 
     componentDidMount() {
-      this.fetchOrders
+      this.fetchOrders();
       setInterval(this.fetchOrders, 2500);
 
       getItems((res) => {
