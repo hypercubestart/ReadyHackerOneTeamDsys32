@@ -14,7 +14,7 @@ module.exports = (app) => {
   app.route('/user/get').get(bonnieMiddleware.verifySession).get(bonnieController.fetchUser);
   // TODO: add a change-password route if we have time
   
-  app.route('/itemsget/').get(bonnieMiddleware.verifySession).get(bonnieController.fetchItems);
+  app.route('/item/get/').get(bonnieMiddleware.verifySession).get(bonnieController.fetchItems);
   app.route('/order/place/').post(bonnieMiddleware.verifySession).post(bonnieController.placeOrder);
 
   // staff routes
