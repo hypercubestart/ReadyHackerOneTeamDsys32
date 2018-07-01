@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { login } from '../api';
+import { login, loginStaff } from '../api';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ class Login extends Component {
     this.loginForm = React.createRef();
 
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleStaffLogin = this.handleStaffLogin.bind(this);
     this.changeEmail = this.changeEmail.bind(this);
     this.changePassword = this.changePassword.bind(this);
   }
@@ -45,6 +46,17 @@ class Login extends Component {
     });
   }
 
+  async handleStaffLogin(){
+    this.loginForm.current.submit();
+    
+    let email = this.state.email;
+    let password = this.state.password;
+
+    loginStaff(email, password, (response) => {
+      console.log(response);
+    });
+  }
+
   render() {
    
 
@@ -60,6 +72,9 @@ class Login extends Component {
           <div style = {{marginBottom: "30px"}}></div>
 
           <Button style={{ cursor: 'pointer', marginBottom: "20px", width: "200px" }} content = "log in" callback = {this.handleLogin}></Button>
+
+          <Button style={{ cursor: 'pointer', marginBottom: "20px", width: "200px" }} content = "as staff" callback = {this.handleStaffLogin}></Button>
+
           <Link to = '/register'>
             <Button content = "register"></Button>
           </Link>
