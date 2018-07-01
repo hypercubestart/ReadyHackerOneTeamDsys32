@@ -25,8 +25,13 @@ exports.login = (req, res) => {
   var user = res.locals.user;
   req.session._id = user._id;
   req.session.authenticated = true;
-
-  res.status(200).redirect('/order/');
+  
+  if (user.admin) {
+    res.status(200).redirect('https://bonnie.dsys32.com/admin/');
+  } else {
+    res.status(200).redirect('https://bonnie.dsys32.com/order/');
+  }
+  
 }
 
 exports.logout = (req, res) => {
