@@ -78,7 +78,7 @@ export default class Checkout extends React.Component {
         for (var i = 0; i < this.state.order.length; i++) {
             cost += parseFloat(this.state.order[i].price) * parseInt(this.state.order[i].quantity)
         }
-        return cost
+        return cost.toFixed(2)
     }
 
     async getUserInfo() {

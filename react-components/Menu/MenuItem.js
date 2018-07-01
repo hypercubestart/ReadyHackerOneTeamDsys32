@@ -52,7 +52,7 @@ export default class MenuItem extends React.Component {
                                 <View style={{alignItems: 'flex-end'}}>
                                     <Image
                                         style={styles.itemImage}
-                                        source={{uri: 'https://s-media-cache-ak0.pinimg.com/736x/10/a4/39/10a439cf845f65db31bb44f14a5655a8.jpg'}}
+                                        source={{uri: this.props.item.picture}}
                                     />
                                     {
                                         this.props.recommended && 
