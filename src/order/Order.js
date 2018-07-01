@@ -9,7 +9,7 @@ import $ from 'jquery';
 
 const BASE_URL = "http://10.0.99.62:3001" //"https://bonnie-api.dsys32.com";
 
-class OrderPage extends Component {
+class Order extends Component {
   constructor(props){
     super(props);
 
@@ -47,7 +47,7 @@ class OrderPage extends Component {
       this.setState({items: items});
 
     } catch (error) {
-      console.log(error + " in app.OrderPage.ComponentWillMount");
+      console.log(error + " in app.Order.ComponentWillMount");
     }
   }
 
@@ -196,4 +196,4 @@ class OrderStep extends Component {
   }
 }
 
-export default OrderPage;
+export default Order;

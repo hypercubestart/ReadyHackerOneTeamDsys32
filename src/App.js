@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Login from './login/App';
-import Register from './register/App';
-import OrderPage from './order/App';
+import Login from './login/Login';
+import Register from './register/Register';
+import Order from './order/Order';
 
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 
@@ -13,7 +13,7 @@ export default class App extends React.Component {
                 <div style = {{height: '100%', width: '100%'}}>
                     <Route exact path = "/login" component = {Login} />
                     <Route exact path = "/register" component = {Register} />
-                    <Route exact path = "/order" component = {OrderPage} />
+                    <Route exact path = "/order" component = {Order} />
                 </div>
             </Router>
         )
