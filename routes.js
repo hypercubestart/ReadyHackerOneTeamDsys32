@@ -13,6 +13,6 @@ module.exports = (app) => {
 
   
   app.route('/items/get/').get(bonnieMiddleware.verifySession).get(bonnieController.fetchItems);
-  // app.route('/order/place/').post(bonnieMiddleware.verifySession).post(bonnieController.placeOrder);
+  app.route('/order/place/').post(bonnieMiddleware.verifySession).post(bonnieController.placeOrder);
   
 }

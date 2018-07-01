@@ -31,6 +31,7 @@ const sessionMiddleware = session({
     mongooseConnection: mongoose.connection
   }),
   cookie: {
+    domain: '*',
     httpOnly: true,
     maxAge: 253402300000000,
     path: '/',

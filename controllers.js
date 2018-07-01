@@ -63,3 +63,8 @@ exports.fetchItems = async (req, res) => {
     res.status(500).end();
   }
 }
+
+exports.placeOrder = async (req, res) => {
+  //var user = res.locals.user;
+
+}
