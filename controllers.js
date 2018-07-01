@@ -76,14 +76,17 @@ exports.placeOrder = async (req, res) => {
   var user = res.locals.user;
   var items = req.body.items;
   var orderTime = Date.now();
-  var totalPrice = 0;
 
   if (!items) return res.status(400);
 
   var promises = items.map(function(item) {
     return new Promise(function(resolve, reject) {
-      Item.findOne({_id: item._id}, function(itemObject) {
-        resolve(itemObject.price * item.quantity);
+      Item.findOne({_id: item._id}, function(err, itemObject) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(itemObject.price * item.quantity);
+        }
       })
     })
   })
@@ -101,6 +104,7 @@ exports.placeOrder = async (req, res) => {
     // TODO: sockets to the staff
     res.status(200).json(order);
   }).catch(err => {
+    console.log(err)
     res.status(500).end();
   });
 }
