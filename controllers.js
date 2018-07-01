@@ -107,4 +107,27 @@ exports.fetchUser = async (req, res) => {
   res.status(200).json(user);
 }
 
+exports.registerStaff = async (req, res) => {
+  var name = req.body.name;
+  var email = req.body.email;
+  var password = req.body.password;
+
+  if (!VI(name, email, password)) return res.status(400).end();
+
+  auth.hash(password, async (hash) => {
+    var staffObject = new Staff({
+      name: name,
+      email: email,
+      password: hash
+    });
+
+    try {
+      await staffObject.save();
+      res.status(200).end();
+    } catch (err) {
+      res.status(500).end();
+    }
+  });
+}
+
 

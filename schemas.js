@@ -41,12 +41,20 @@ var OrderSchema = new Schema({
   cancelledTime: Date
 });
 
+var StaffSchema = new Schema({
+  name: String,
+  email: String,
+  passHashed: String
+});
+
 var Item = mongoose.model('Item', ItemSchema, 'items');
 var Order = mongoose.model('Order', OrderSchema, 'orders');
 var User = mongoose.model('User', UserSchema, 'users');
+var Staff = mongoose.model('Staff', StaffSchema, 'staff');
 
 module.exports = {
   Item: Item,
   Order: Order,
-  User: User
+  User: User,
+  Staff: Staff
 };

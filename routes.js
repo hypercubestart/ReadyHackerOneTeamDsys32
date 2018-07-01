@@ -16,5 +16,12 @@ module.exports = (app) => {
   
   app.route('/items/get/').get(bonnieMiddleware.verifySession).get(bonnieController.fetchItems);
   app.route('/order/place/').post(bonnieMiddleware.verifySession).post(bonnieController.placeOrder);
+
+  // staff routes
+  app.route('/staff/login/').post(bonnieMiddleware.authenticateStaff).post(bonnieController.login);
+  app.route('/staff/register/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.registerStaff);
+  app.route('/staff/logout/').post(bonnieMiddleware.verifyStaffSession).post(bonnieController.logout);
+  
+  // app.route('/order/get/').get(bonnieMiddleware.verifyStaffSession).post()
   
 }

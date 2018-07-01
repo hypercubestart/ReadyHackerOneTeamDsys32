@@ -43,7 +43,29 @@ exports.authenticate = async (req, res, next) => {
 }
 
 exports.authenticateStaff = async (req, res, next) => {
+  var email = req.body.email;
+  var password = req.body.password;
 
+  if (!VI(email, password)) res.status(400).end();
+
+  try {
+    let staff = await Staff.findOne({
+      email: email
+    });
+
+    if (!staff) return res.status(404).end();
+
+    auth.check(password, staff.passHashed, (valid) => {
+      if (valid) {
+        res.locals.user = staff;
+        req.session.authenticated = true;
+        next();
+      } else res.status(401).end();
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).end();
+  }
 }
 
 exports.verifySession = async (req, res, next) => {
@@ -67,5 +89,21 @@ exports.verifySession = async (req, res, next) => {
 }
 
 exports.verifyStaffSession = async (req, res, next) => {
+  var id = req.session._id;
 
+  if (!id || !req.session.authenticated) return res.status(401).end();
+
+  try {
+    let user = await Staff.findOne({
+      _id: id
+    });
+
+    if (!user) return res.status(401).end();
+
+    res.locals.user = user;
+    next();
+  } catch (err) {
+    console.log(err);
+    res.status(500).end();
+  }
 }
