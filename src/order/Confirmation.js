@@ -54,7 +54,7 @@ export default class Confirmation extends Component {
 
         <div style = {{fontSize: "50px", color: "black", marginBottom: "0px", marginTop: "25px"}}>cost</div>
         <div style = {{fontSize: "70px", color: "rgb(26, 228, 144)"}}>
-            ${totalCost}
+            ${totalCost.toFixed(2)}
         </div>
 
         <div style = {{fontSize: "50px", color: "black", marginBottom: "0px", marginTop: "25px"}}>user information</div>
