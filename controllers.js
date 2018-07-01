@@ -97,7 +97,7 @@ exports.placeOrder = async (req, res) => {
     let order = await orderObject.save();
 
     // TODO: sockets to the staff
-    res.status(200).end();
+    res.status(200).send(order);
   } catch (err) {
     res.status(500).end();
   }
