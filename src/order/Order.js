@@ -54,7 +54,14 @@ class Order extends Component {
   }
 
   handleCheckOut() {
-    this.setState({step: 1});
+    var items = this.state.items.slice();
+
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].quantity > 0) {
+        this.setState({step: 1});
+        return;
+      }
+    }
   }
 
   changeQuantity(event, id, inc, fromItem){
