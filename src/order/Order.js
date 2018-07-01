@@ -20,7 +20,8 @@ class Order extends Component {
 
     this.state = {
       items: [],
-      step: 0
+      step: 0,
+      orderID: ''
     };
 
     this.changeQuantity = this.changeQuantity.bind(this);
@@ -76,6 +77,7 @@ class Order extends Component {
     placeOrder(this.state.items, (response) => {
       if (response.status == 200) {
         this.setState({
+          orderID: new Buffer(response.data.toString(), 'hex').toString('base64').substring(0, 8),
           step: 2
         });
       }
@@ -190,7 +192,7 @@ class Order extends Component {
         {value => <div className = "order-steps" style = {{marginLeft: (15 - value.x * 33.5) + "%", marginBottom: "25px", width: "100%", position: "fixed", top: "80px", zIndex: '10000', left: '0'}}>
         <OrderStep content = "menu" selected = {this.state.step == 0}></OrderStep>
         <OrderStep content = "check out" selected = {this.state.step == 1}></OrderStep>
-        <OrderStep content = "confirmation" selected = {this.state.step == 2}></OrderStep>
+        <OrderStep content = {"confirmation: " + this.state.orderID } selected = {this.state.step == 2}></OrderStep>
       </div>}
       </Motion>
       
