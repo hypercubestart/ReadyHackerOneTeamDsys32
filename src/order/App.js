@@ -5,7 +5,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {Motion, spring, presets} from 'react-motion';
 
-const BASE_URL = "https://bonnie-api.dsys32.com";
+import $ from 'jquery';
+
+const BASE_URL = "http://10.0.99.62:3001" //"https://bonnie-api.dsys32.com";
 
 class OrderPage extends Component {
   constructor(props){
@@ -42,8 +44,21 @@ class OrderPage extends Component {
     };
   }
 
-  componentWillMount(){
+  async componentWillMount(){
     console.log("component WILL mount");
+
+    try{
+      let response = await axios(//$.get(BASE_URL + "/item/get"); /*
+        {
+          method: 'get',
+          url: BASE_URL + '/item/get',
+          withCredentials: true
+      });
+
+      console.log(response);
+    } catch (error) {
+      console.log(error + " in app.OrderPage.ComponentWillMount");
+    }
   }
 
   changeQuantity(id, inc){
