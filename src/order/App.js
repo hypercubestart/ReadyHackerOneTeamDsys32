@@ -14,9 +14,40 @@ class OrderPage extends Component {
     super(props);
 
     this.state = {
+<<<<<<< HEAD
       items: [],
+=======
+      items: [
+        {
+          itemId: "djfiosje",
+          category: "appetizer",
+          title: "prosciutto & fig flatbread",
+          description: "whipped rocatta, fig jam, prosciutto, arugula, balsamic reduction",
+          price: "11.99",
+          quantity: 0
+        },
+        {
+          itemId: "djfiosjed",
+          category: "appetizer",
+          title: "prosciutto & fig flatbread yes",
+          description: "whipped rocatta, fig jam, prosciutto, arugula, balsamic reduction",
+          price: "15.99",
+          quantity: 0
+        },
+        {
+          itemId: "djfiosjedd2",
+          category: "entrees",
+          title: "prosciutto & fig flatbread",
+          description: "whipped rocatta, fig jam, prosciutto, arugula, balsamic reduction",
+          price: "15.99",
+          quantity: 0
+        } 
+      ],
+>>>>>>> 221a4d1297806ee9af2ea46a0672b4fb01bde898
       step: 0
     };
+
+    this.changeQuantity = this.changeQuantity.bind(this);
   }
 
   async componentWillMount(){
@@ -48,11 +79,7 @@ class OrderPage extends Component {
   }
 
   changeQuantity(id, inc){
-    this.setState(
-      {
 
-      }
-    )
   }
   
   /*
@@ -150,7 +177,7 @@ class ItemPrice extends Component {
 class ItemQuantity extends Component {
   render() {
     return <div style = {{fontSize: "17px", color: "white", position: "absolute", bottom: "15px", left: "120px", background: "#1c5bff", padding: "0px 7px 5px 7px", borderRadius: "30px"}}>
-      <span style = {{marginRight: "15px"}}>-</span> {this.props.content} <span style = {{marginLeft: "15px"}}>+</span>
+      <span style = {{marginRight: "15px"}} onClick = {this.props.callback}>-</span> {this.props.content} <span style = {{marginLeft: "15px"}}>+</span>
     </div>
   }
 }
