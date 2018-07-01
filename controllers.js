@@ -70,9 +70,35 @@ exports.fetchItems = async (req, res) => {
 }
 
 exports.placeOrder = async (req, res) => {
-  /*
+  
   var user = res.locals.user;
   var items = req.body.items;
-  var orderedDate = 
-*/
+  var orderTime = Date.now();
+  var totalPrice = 0;
+
+  if (!items) return res.status(400);
+  
+  try {
+    items.forEach((item) => {
+      var itemObject = await Item.findOne({_id: item.item}).exec();
+  
+      totalPrice += itemObject.price * item.quantity;
+    });
+  
+    var orderObject = new Order({
+      user: user._id,
+      items: items,
+      totalPrice: totalPrice,
+      orderTime: orderTime
+    });
+
+    let order = await orderObject.save();
+
+    // TODO: sockets to the staff
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
+  }
+
+  
 }
