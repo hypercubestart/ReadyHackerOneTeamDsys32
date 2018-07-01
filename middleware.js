@@ -92,6 +92,7 @@ exports.verifySession = async (req, res, next) => {
 exports.verifyStaffSession = async (req, res, next) => {
   var id = req.session._id;
 
+  console.log(id);
   if (!id || !req.session.authenticated) return res.status(401).end();
 
   try {
