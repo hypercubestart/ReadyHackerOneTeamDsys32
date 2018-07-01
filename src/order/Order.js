@@ -20,6 +20,7 @@ class Order extends Component {
 
     this.changeQuantity = this.changeQuantity.bind(this);
     this.cancelItem = this.cancelItem.bind(this);
+    this.handleCheckOut = this.handleCheckOut.bind(this);
   }
 
   async componentWillMount(){
@@ -50,6 +51,10 @@ class Order extends Component {
     } catch (error) {
       console.log(error + " in app.Order.ComponentWillMount");
     }
+  }
+
+  handleCheckOut() {
+    this.setState({step: 1});
   }
 
   changeQuantity(event, id, inc, fromItem){
@@ -141,7 +146,7 @@ class Order extends Component {
 
       {itemGroups}
 
-      <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCreateUser()}></Button>
+      <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} content = "check out" callback = {() => this.handleCheckOut()}></Button>
 
     </div>
   }
