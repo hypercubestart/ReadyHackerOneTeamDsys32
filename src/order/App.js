@@ -14,36 +14,7 @@ class OrderPage extends Component {
     super(props);
 
     this.state = {
-<<<<<<< HEAD
       items: [],
-=======
-      items: [
-        {
-          itemId: "djfiosje",
-          category: "appetizer",
-          title: "prosciutto & fig flatbread",
-          description: "whipped rocatta, fig jam, prosciutto, arugula, balsamic reduction",
-          price: "11.99",
-          quantity: 0
-        },
-        {
-          itemId: "djfiosjed",
-          category: "appetizer",
-          title: "prosciutto & fig flatbread yes",
-          description: "whipped rocatta, fig jam, prosciutto, arugula, balsamic reduction",
-          price: "15.99",
-          quantity: 0
-        },
-        {
-          itemId: "djfiosjedd2",
-          category: "entrees",
-          title: "prosciutto & fig flatbread",
-          description: "whipped rocatta, fig jam, prosciutto, arugula, balsamic reduction",
-          price: "15.99",
-          quantity: 0
-        } 
-      ],
->>>>>>> 221a4d1297806ee9af2ea46a0672b4fb01bde898
       step: 0
     };
 
@@ -72,7 +43,8 @@ class OrderPage extends Component {
         });
       });
 
-      console.log(response);
+      this.setState({items: items});
+      
     } catch (error) {
       console.log(error + " in app.OrderPage.ComponentWillMount");
     }
