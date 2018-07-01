@@ -42,12 +42,14 @@ export default class Admin extends Component {
     handleAddItem = (name, description, price, category, picture) => {
         addItem(name, description, price, category, picture, (res)=>{
             getItems((res) => {
-
+                console.log(this.state.items); 
                 let items = res.data;
         
                 this.setState({
                   items: items
                 });
+
+                console.log(this.state.items); 
 
                 this.forceUpdate();
               });
@@ -74,6 +76,9 @@ export default class Admin extends Component {
         this.setState({
             currentOrders: orders
         });
+
+        console.log(this.state.currentOrders);
+        console.log("^^^^");
       });
     }
 
@@ -83,10 +88,13 @@ export default class Admin extends Component {
 
       getItems((res) => {
         let items = res.data;
+        console.log(this.state.items); 
 
         this.setState({
           items: items
         });
+        
+        console.log(this.state.items); 
       });
     }
 
@@ -97,17 +105,24 @@ export default class Admin extends Component {
     }
 
     render() {
+        console.log("RERENDERING");
         var page;
         if (this.state.tab == 0){
             page = <div>
+                <div style = {{position: "fixed", left: '0', top: '0', width: "100%", height: "220px", background: "white", zIndex: "100"}}></div>
                 <div style = {{width: "140%", marginLeft: "-20%", display: "flex", zIndex: "0"}}>
-                    <div style = {{width: "50%", zIndex: "1000"}}>
+                    <div style = {{width: "50%", zIndex: "10"}}>
                         {this.state.currentOrders.map((order) => {
-                            return <Order data = {order} availableItems={this.state.items} fulfillOrder={this.fulfillOrderIntermediate} cancelOrder={this.cancelOrderIntermediate}></Order>
+                            if (order.status == 0){
+                                return <Order status = {order.status} data = {order} availableItems={this.state.items} fulfillOrder={this.fulfillOrderIntermediate} cancelOrder={this.cancelOrderIntermediate}></Order>
+                            }else{
+                                return <Order status = {order.status} data = {order} availableItems={this.state.items} fulfillOrder={this.fulfillOrderIntermediate} cancelOrder={this.cancelOrderIntermediate}></Order>
+
+                            }
                         })}
                     </div>
                     <div style = {{width: "50%"}} orders = {this.state.currentOrders}></div>
-                     <Button content = 'export orders' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} callback = {() => {this.exportOrders()}}></Button>
+                     <Button content = 'export orders' style = {{zIndex: "100000000000000000000000", width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} callback = {() => {this.exportOrders()}}></Button>
                 </div>
             </div>;
         }else if (this.state.tab == 2){
@@ -119,7 +134,7 @@ export default class Admin extends Component {
         }else if (this.state.tab == 1){
             page = <div>
                 <div style = {{width: "100%"}}>
-                    <ItemPage uploadItemCallback = {this.handleAddItem}></ItemPage>
+                    <ItemPage items = {this.state.items} uploadItemCallback = {this.handleAddItem}></ItemPage>
                 </div>
             </div>
         }
@@ -196,9 +211,9 @@ class StaffPage extends Component {
     }
 
     render() {
-        return <div style = {{}}>
+        return <div style = {{display: "flex", flexWrap: "wrap"}}>
             {this.state.staff.map((member) => {
-                return <div style = {{width: "45%", marginLeft: "2.5%", height: "140px", border: "3px #1c5bff solid", borderRadius: "15px", padding: "15px"}}>
+                return <div style = {{width: "45%", marginLeft: "2.5%", height: "140px", border: "3px #1c5bff solid", borderRadius: "15px", padding: "15px", marginBottom: "15px"}}>
                     <Staff data = {member}></Staff>
                     <Button content = 'new staff' style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "50px", right: "100px"}} callback = {() => this.toggleAddMember()}></Button>
 
@@ -216,7 +231,7 @@ class ItemPage extends Component {
         super(props)
 
         this.state = {
-            items: [],
+    
             addingItem: false
         }
     
@@ -235,20 +250,10 @@ class ItemPage extends Component {
         })
     }
 
-    componentDidMount(){
-        getItems((res) => {
-            console.log(res.data);
-
-            let items = res.data;
-            this.setState({
-                items: items
-            });
-        });
-    }
 //{this.state.addingItem && <ItemCreateForm></ItemCreateForm>}
     render() {
         return <div style = {{display: "flex", flexWrap: "wrap"}}>
-            {this.state.items.map((item) => {
+            {this.props.items.map((item) => {
                 return <div style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: "#1c5bff 3px solid", borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
                     <Item data = {item}></Item>
                 </div>
@@ -371,7 +376,26 @@ class ItemCreateForm extends Component {
 
         console.log(itemNames);
         
-        return <div style = {{position: "relative", width: "70%", height: "fit-content", minHeight: "140px", background: "white", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px", zIndex: "0"}}>
+        var style = {position: "relative", width: "70%", height: "fit-content", minHeight: "140px", background: "white", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px", zIndex: "0"}
+
+        console.log(this.props.status + " THIS IS STATUS");
+        if (this.props.status != 0){
+            style["marginLeft"] = '100%'
+        }else{
+            style['marginLeft'] = '30%';
+        }
+
+        if (this.props.status == 1){
+            style['borderColor'] = '#f05056';
+            style['color'] = 'white';
+        }
+
+        if (this.props.status == 2){
+            style['borderColor'] = 'rgb(26, 228, 144)';
+            style['color'] = 'black';
+        }
+
+        return <div style = {style}>
           <div>
             <div style = {{fontSize: "20px", color: "black"}}>{this.props.data.user.name}: {new Buffer(this.props.data._id.toString(), 'hex').toString('base64').substring(0, 8)}</div>
               {
@@ -380,17 +404,22 @@ class ItemCreateForm extends Component {
                 })
               }
              <div style = {{fontSize: "20px", color: "#bbb", position: "absolute", top: "15px", right: "25px"}}>{moment(parseInt(timestamp, 16) * 1000).fromNow()}</div>
-             
-             <div style = {{position: "absolute", right: "0px", top: "-3px", background: "white", height: "calc(100% + 6px)", width: "90px", zIndex: 1000000, borderRadius: "0px 15px 15px 0px", border: "3px solid #527aff", borderLeftStyle: "none", zIndex: '-1'}} >
+   
+         
+              { this.props.status == 0 &&
+              
+                <div>
+                        <div style = {{position: "absolute", right: "0px", top: "-3px", background: "white", height: "calc(100% + 6px)", width: "90px", zIndex: 1000000, borderRadius: "0px 15px 15px 0px", border: "3px solid #527aff", borderLeftStyle: "none", zIndex: '-1'}} >
                 
              </div>
-
-             <div className = "cancel-order-button" style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", zIndex: 1000000, border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-2'}} onClick = {() => {this.props.cancelOrder(this.props.data._id)}}>
+<div className = "cancel-order-button" style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", zIndex: 1000000, border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-2'}} onClick = {() => {this.props.cancelOrder(this.props.data._id)}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "10px", color: "white", width: "fit-content"}}>close</div>
              </div>
              <div className = "fulfill-order-button" style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '-3'}} onClick = {() => {this.props.fulfillOrder(this.props.data._id)}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "0px", color: "white", width: "fit-content"}}>check</div>
-             </div>
+             </div></div>
+              }
+             
              
           </div>
         </div>
