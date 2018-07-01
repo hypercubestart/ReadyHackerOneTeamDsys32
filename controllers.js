@@ -118,7 +118,18 @@ exports.placeOrder = async (req, res) => {
 exports.fetchUser = async (req, res) => {
   var user = res.locals.user;
 
-  res.status(200).json(user);
+  try {
+    var promises = user.previousOrders.map(function(id) {
+      return Order.findOne({_id: id}).exec()
+    })
+
+    Promise.all(promises).then(function(prevOrders) {
+      user.previousOrders = prevOrders
+      res.status(200).json(user);
+    })
+  } catch(err) {
+      res.status(404).end()
+  }
 }
 
 exports.registerStaff = async (req, res) => {
