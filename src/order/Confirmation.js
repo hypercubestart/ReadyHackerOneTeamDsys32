@@ -5,13 +5,26 @@ import { Item, ItemTitle, ItemDescription, ItemPrice, ItemTotalPrice} from './Or
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 
+import { getUser } from '../api';
+
 export default class Confirmation extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      items: this.props.items
+      items: this.props.items,
+      userInfo: {}
     }
+  }
+
+  componentWillMount() {
+    getUser((res) => {
+      this.setState({
+        userInfo: res.data
+      })
+
+      console.log(res.data);
+    });
   }
 
   render() {
@@ -40,6 +53,11 @@ export default class Confirmation extends Component {
         </div>
 
         <div style = {{fontSize: "50px", color: "black", marginBottom: "0px", marginTop: "25px"}}>cost</div>
+        <div style = {{fontSize: "70px", color: "rgb(26, 228, 144)"}}>
+            ${totalCost}
+        </div>
+
+        <div style = {{fontSize: "50px", color: "black", marginBottom: "0px", marginTop: "25px"}}>user information</div>
         <div style = {{fontSize: "70px", color: "rgb(26, 228, 144)"}}>
             ${totalCost}
         </div>
