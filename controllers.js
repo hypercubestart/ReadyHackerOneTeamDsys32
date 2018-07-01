@@ -52,7 +52,7 @@ exports.register = (req, res) => {
       else {
         req.session._id = savedUser._id;
         req.session.authenticated = true;
-        res.status(200).end();
+        res.status(200).json(req.session);
       }
     });
   });
