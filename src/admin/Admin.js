@@ -40,6 +40,13 @@ export default class Admin extends Component {
             console.log(res.data);
 
             let orders = res.data;
+
+            orders.forEach((order, index, orders) => {
+              if (order.fulfilledTime) orders[index].status = 2;
+              else if (order.cancelledTime) orders[index].status = 1;
+              else orders[index].status = 0;
+            }); 
+
             this.setState({
                 currentOrders: orders
             });
