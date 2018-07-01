@@ -136,11 +136,13 @@ class Order extends Component {
     
       <div style = {{position: 'fixed', top: '0', left: '0', height: '150px', width: '100%', background: "white", zIndex: "1"}}></div>
 
-      <div className = "order-steps" style = {{marginBottom: "25px", position: "fixed", top: "80px", left: "15%", zIndex: '10000'}}>
+      <Motion defaultStyle={{x: 0}} style={{x: spring(this.state.step, presets.wobbly)}}>
+        {value => <div className = "order-steps" style = {{marginLeft: (15 - value.x * 33.5) + "%", marginBottom: "25px", width: "100%", position: "fixed", top: "80px", zIndex: '10000', left: '0'}}>
         <OrderStep content = "menu" selected = {this.state.step == 0}></OrderStep>
         <OrderStep content = "check out" selected = {this.state.step == 1}></OrderStep>
         <OrderStep content = "confirmation" selected = {this.state.step == 2}></OrderStep>
-      </div>
+      </div>}
+      </Motion>
 
       <div style = {{height: "70px"}}></div>
 
