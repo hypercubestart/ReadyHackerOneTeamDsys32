@@ -1,7 +1,6 @@
 import {OrderStep} from "../order/Order";
 
 import React, { Component } from 'react'
-import io from "socket.io";
 import exportFromJSON from 'export-from-json'
 
 import { getOrders, getItems, getStaff, cancelOrder, fulfillOrder, exportOrders } from '../api';
