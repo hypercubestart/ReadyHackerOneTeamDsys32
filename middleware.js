@@ -3,8 +3,11 @@
 // dependencies
 const schemas = require('./schemas');
 const auth = require('./auth');
+
 // mongoose models
 const User = schemas.User;
+const Item = schemas.Item;
+const Order = schemas.Order;
 
 const VI = (...parameters) => {
   for (var i = 0; i < parameters.length; i++) {

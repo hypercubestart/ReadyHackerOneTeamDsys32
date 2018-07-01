@@ -4,6 +4,11 @@ const auth = require('./auth');
 const async = require('async');
 const schemas = require('./schemas');
 
+// mongoose models
+const User = schemas.User;
+const Item = schemas.Item;
+const Order = schemas.Order;
+
 const VI = (...parameters) => {
   for (var i = 0; i < parameters.length; i++) {
     if (!parameters[i]) return false;
