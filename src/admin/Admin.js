@@ -249,9 +249,6 @@ class ItemPage extends Component {
             {this.state.items.map((item) => {
                 return <div style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: "#1c5bff 3px solid", borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
                     <Item data = {item}></Item>
-                    
-
-                    
                 </div>
             })}
 
@@ -277,6 +274,7 @@ class Item extends Component {
         return <div>
             <div style = {{fontSize: "20px"}}>{this.props.data.name}</div>
             <div style = {{fontSize: "15px", color: "#ccc"}}>{this.props.data.description}</div>
+            <div style = {{fontSize: "15px", color: "#ccc"}}>popularity: {this.props.data.popularity}</div>
         </div>
     }
 }
