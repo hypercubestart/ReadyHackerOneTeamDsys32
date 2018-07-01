@@ -21,8 +21,8 @@ export default class Admin extends Component {
 
     exportOrders = () => {
         var parseOrder = this.state.currentOrders.map(function(order) {
-          return objectToArray(order)
-        })
+          return this.objectToArray(order)
+        }.bind(this));
       fd(parseOrder, 'order.csv');
     }
 
