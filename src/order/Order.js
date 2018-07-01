@@ -247,7 +247,7 @@ class ItemPrice extends Component {
 class ItemTotalPrice extends Component {
   render() {
     if (this.props.quantity > 0){
-      return <div style = {{fontSize: "20px", color: "rgb(26, 228, 144)", position: "absolute", bottom: "15px", right: "25px"}}>{this.props.price * this.props.quantity}</div>
+      return <div style = {{fontSize: "20px", color: "rgb(26, 228, 144)", position: "absolute", bottom: "15px", right: "25px"}}>{(this.props.price * this.props.quantity).toFixed(2)}</div>
     }else{
       return <div></div>
     }
@@ -283,4 +283,4 @@ class OrderStep extends Component {
 }
 
 export default Order;
-export { Order, Item, ItemDescription, ItemTitle, ItemPrice, ItemTotalPrice };
+export { Order, Item, ItemDescription, ItemTitle, ItemPrice, ItemTotalPrice, OrderStep };
