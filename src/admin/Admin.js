@@ -3,7 +3,7 @@ import {OrderStep} from "../order/Order";
 import React, { Component } from 'react'
 import io from "socket.io";
 
-import { getOrders } from '../api';
+import { getOrders, getItems } from '../api';
 import moment from 'moment';
 
 export default class Admin extends Component {
@@ -12,7 +12,8 @@ export default class Admin extends Component {
 
         this.state = {
             currentOrders: [],
-            tab: 0
+            tab: 0,
+            items: []
         }
     }
 
@@ -23,8 +24,16 @@ export default class Admin extends Component {
             let orders = res.data;
             this.setState({
                 currentOrders: orders
-            })
-        })
+            });
+        });
+
+        getItems((res) => {
+          let items = res.data;
+
+          this.setState({
+            items: items
+          });
+        });
     }
 
     changeTab(tab){
@@ -48,7 +57,7 @@ export default class Admin extends Component {
                         <div style = {{width: "100%", display: "flex"}}>
                             <div style = {{width: "50%"}}>
                                 {this.state.currentOrders.map((order) => {
-                                    return <Order data = {order}></Order>
+                                    return <Order data = {order} availableItems={this.state.items}></Order>
                                 })}
                             </div>
                             <div style = {{width: "50%"}} orders = {this.state.currentOrders}></div>
@@ -85,12 +94,21 @@ class AdminLink extends Component {
 
         var borderString = '3px solid #527aff';
 
-        var items = [];
+        var itemNames = [];
 
         for (var i = 0; i < this.props.data.items.length; i++){
-            if (this.props.data.items[i].quantity > 0) {
-                items.push(this.props.data.items[i].name);
+          var item = this.props.data.items[i];
+          
+          for (var j = 0; j < this.props.availableItems.length; j++) {
+            if (item._id == this.props.availableItems[i]._id) {
+              if (item.quantity > 1) 
+                itemNames.push(this.props.availableItems[i].name + ' (x' + item.quantity + ')');
+              else if (item.quantity == 1)
+                itemNames.push(this.props.availableItems[i].name);
+                
+              break;
             }
+          }
         }
         
         return <div style = {{position: "relative", width: "100%", height: "140px", background: "white", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px",  marginBottom: "25px"}}>
