@@ -44,14 +44,14 @@ class OrderPage extends Component {
       });
 
       this.setState({items: items});
-      
+
     } catch (error) {
       console.log(error + " in app.OrderPage.ComponentWillMount");
     }
   }
 
   changeQuantity(id, inc){
-
+    console.log("CHANGING " + id + " " + inc);
   }
   
   /*
@@ -122,7 +122,7 @@ class Item extends Component {
         <ItemTitle content = {this.props.data.title}></ItemTitle>
         <ItemDescription content = {this.props.data.description}></ItemDescription>
         <ItemPrice content = {this.props.data.price}></ItemPrice>
-        <ItemQuantity content = {this.props.data.quantity} callback = {() => this.props.callback(this.props.data.itemId)}></ItemQuantity>
+        <ItemQuantity content = {this.props.data.quantity} itemId = {this.props.data.itemId} callback = {this.props.callback}></ItemQuantity>
       </div>
     </div>
   }
@@ -149,7 +149,9 @@ class ItemPrice extends Component {
 class ItemQuantity extends Component {
   render() {
     return <div style = {{fontSize: "17px", color: "white", position: "absolute", bottom: "15px", left: "120px", background: "#1c5bff", padding: "0px 7px 5px 7px", borderRadius: "30px"}}>
-      <span style = {{marginRight: "15px"}} onClick = {this.props.callback}>-</span> {this.props.content} <span style = {{marginLeft: "15px"}}>+</span>
+      <span style = {{marginRight: "15px"}} onClick = {() => this.props.callback(this.props.itemId, -1)}>-</span>
+      {this.props.content} 
+      <span style = {{marginLeft: "15px"}} onClick = {() => this.props.callback(this.props.itemId, 1)}>+</span>
     </div>
   }
 }
