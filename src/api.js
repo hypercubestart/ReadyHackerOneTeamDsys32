@@ -149,7 +149,7 @@ var removeItem = (id, callback) => {
 var getStaff = (callback) => {
   const url = BASE_URL + '/staff/get';
 
-  axios.get(url, {withCredentials: true}).then((res) => callback(Res)).catch((err) => console.log(err));
+  axios.get(url, {withCredentials: true}).then((res) => callback(res)).catch((err) => console.log(err));
 }
 
 export { getItems, register, login, logout, placeOrder, isAuthenticated, getUser, fulfillOrder, cancelOrder, getOrders, exportOrders, registerStaff, loginStaff, logoutStaff, addItem, removeItem, getStaff };
