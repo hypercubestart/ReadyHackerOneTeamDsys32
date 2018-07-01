@@ -52,3 +52,14 @@ exports.register = (req, res) => {
     });
   });
 }
+
+exports.fetchItems = async (req, res) => {
+  try {
+    let items = await Item.find({}).exec();
+    
+    res.status(200).json(items);
+  } catch (err) {
+    console.log(err);
+    res.status(500).end();
+  }
+}
