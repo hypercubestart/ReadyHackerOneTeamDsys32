@@ -77,9 +77,9 @@ exports.placeOrder = async (req, res) => {
   var totalPrice = 0;
 
   if (!items) return res.status(400);
-  
+
   try {
-    items.forEach((item) => {
+    items.forEach(async (item) => {
       var itemObject = await Item.findOne({_id: item.item}).exec();
   
       totalPrice += itemObject.price * item.quantity;
