@@ -81,23 +81,27 @@ exports.placeOrder = async (req, res) => {
   if (!items) return res.status(400);
 
   try {
-    items.forEach(async (item) => {
-      var itemObject = await Item.findOne({_id: item.item}).exec();
-  
-      totalPrice += itemObject.price * item.quantity;
+    var promises = items.map(function(item) {
+      return new Promise(function(resolve, reject) {
+        Item.findOne({_id: item._id}, function(itemObject) {
+          resolve(itemObject.price * item.quantity);
+        })
+      })
+    })
+    Promise.all(promises).then(function(values) {
+      return values.reduce((a, b) => a + b, 0)
+    }).then(totalPrice => {
+      var orderObject = new Order({
+        user: user._id,
+        items: items,
+        totalPrice: totalPrice,
+        orderTime: orderTime
+      });
+      return orderObject.save()
+    }).function(order) {
+      // TODO: sockets to the staff
+      res.status(200).json(order);
     });
-  
-    var orderObject = new Order({
-      user: user._id,
-      items: items,
-      totalPrice: totalPrice,
-      orderTime: orderTime
-    });
-
-    let order = await orderObject.save();
-
-    // TODO: sockets to the staff
-    res.status(200).json(order);
   } catch (err) {
     res.status(500).end();
   }
