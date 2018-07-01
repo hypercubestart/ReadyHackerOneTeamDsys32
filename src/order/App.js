@@ -138,7 +138,7 @@ class Button extends Component {
 class Item extends Component {
   render () {
     var borderString;
-    if (this.props.quantity > 0) {
+    if (this.props.data.quantity > 0) {
       borderString = '3px solid #14DB88';
     } else {
       borderString = '3px solid #527aff';
