@@ -97,7 +97,7 @@ class Order extends Component {
 
     let itemGroups = Object.keys(groups).map((group) => {
       var itemsInGroup = groups[group].map((item) => {
-        return <Item data = {item} callback = {this.changeQuantity}></Item>
+        return <Item data = {item} changeQuantityCallback = {this.changeQuantity}></Item>
       })
 
       return <div style = {{display: "flex", flexWrap: "wrap", position: "relative", marginBottom: "25px"}}>
@@ -147,12 +147,14 @@ class Item extends Component {
       borderString = '3px solid #527aff';
     }
     
-    return <div onClick = {(event) => this.props.callback(event, this.props.data.itemId, 1, 1, true)} style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px"}}>
+    return <div onClick = {(event) => this.props.changeQuantityCallback(event, this.props.data.itemId, 1, 1, true)} style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px"}}>
       <div>
         <ItemTitle content = {this.props.data.title}></ItemTitle>
         <ItemDescription content = {this.props.data.description}></ItemDescription>
         <ItemPrice content = {this.props.data.price}></ItemPrice>
-        <ItemQuantity content = {this.props.data.quantity} itemId = {this.props.data.itemId} callback = {this.props.callback}></ItemQuantity>
+        <ItemQuantity content = {this.props.data.quantity} itemId = {this.props.data.itemId} callback = {this.props.changeQuantityCallback}></ItemQuantity>
+
+        
       </div>
     </div>
   }
