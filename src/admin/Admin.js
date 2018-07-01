@@ -16,7 +16,9 @@ export default class Admin extends Component {
 
     render() {
         return(
-
+            <div style = {{width: "70%", marginLeft: "15%", paddingTop: "150px"}}>
+                <div></div>
+            </div>
         )
     }
 }
