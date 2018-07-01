@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import axios from 'axios';
 
+import { Link } from 'react-router-dom';
+
 class Login extends Component {
   constructor(props){
     super(props);
@@ -51,7 +53,6 @@ class Login extends Component {
     return (
       <div className = "login-card valign-wrapper z-depth-3">
         <div style = {{width: "100%", textAlign: "center"}}>
-          <div style = {{marginBottom: "100px", fontSize: "50px", color: "white"}}>bonnie's</div>
 
           <input placeholder = "email" value = {this.state.email} className = 'login-input' onChange = {this.changeEmail}></input>
 
@@ -60,7 +61,9 @@ class Login extends Component {
           <div style = {{marginBottom: "30px"}}></div>
 
           <Button content = "log in" callback = {(email, password) => this.handleLogin(email, password)}></Button>
-          <Button content = "register"></Button> 
+          <Link to = '/register'>
+            <Button content = "register"></Button>
+          </Link>
         </div>
       </div>
     )
