@@ -8,6 +8,7 @@ const MongoStore = require('connect-mongo')(session);
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 const app = express();
+const cors = require('cors');
 const port = 3000;
 
 // mongodb
@@ -39,6 +40,7 @@ const sessionMiddleware = session({
   unset: 'destroy'
 });
 
+app.use(cors());
 app.use(sessionMiddleware);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
