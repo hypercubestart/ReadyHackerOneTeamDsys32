@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import io from "socket.io";
 import exportFromJSON from 'export-from-json'
 
-import { getOrders, getItems, getStaff, cancelOrder } from '../api';
+import { getOrders, getItems, getStaff, cancelOrder, fulfillOrder } from '../api';
 import Button from "../components/Button";
 import moment from 'moment';
 
@@ -56,7 +56,7 @@ export default class Admin extends Component {
         this.setState({
             tab: tab
         })
-    } 
+    }
 
     render() {
         var page;
@@ -65,7 +65,7 @@ export default class Admin extends Component {
                 <div style = {{width: "140%", marginLeft: "-20%", display: "flex"}}>
                     <div style = {{width: "50%"}}>
                         {this.state.currentOrders.map((order) => {
-                            return <Order data = {order} availableItems={this.state.items}></Order>
+                            return <Order data = {order} availableItems={this.state.items} fulfillOrder={fulfillOrder} cancelOrder={cancelOrder}></Order>
                         })}
                     </div>
                     <div style = {{width: "50%"}} orders = {this.state.currentOrders}></div>
@@ -279,10 +279,10 @@ class StaffCreateForm extends Component {
               }
              <div style = {{fontSize: "20px", color: "#bbb", position: "absolute", top: "15px", right: "25px"}}>{moment(parseInt(timestamp, 16) * 1000).fromNow()}</div>
            
-             <div className = "cancel-order-button" style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-1'}} onClick = {() => {}}>
+             <div className = "cancel-order-button" style = {{position: "absolute", right: "-70px", top: "-3px", background: "#f05056", height: "calc(100% + 6px)", width: "90px", border: "3px #f05056 solid", borderRadius: "15px", zIndex: '-1'}} onClick = {() => {this.props.cancelOrder(this.props.data._id)}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "10px", color: "white", width: "fit-content"}}>close</div>
              </div>
-             <div className = "fulfill-order-button" style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '-2'}}>
+             <div className = "fulfill-order-button" style = {{position: "absolute", right: "-130px", top: "-3px", background: "rgb(26, 228, 144)", height: "calc(100% + 6px)", width: "170px", border: "3px rgb(26, 228, 144) solid", borderRadius: "15px", zIndex: '-2'}} onClick = {() => {this.props.fulfillOrder(this.props.data._id)}}>
                 <div className = "material-icons valign-wrapper" style = {{position: "absolute", fontSize: "50px", top: "40px", right: "0px", color: "white", width: "fit-content"}}>check</div>
              </div>
              
