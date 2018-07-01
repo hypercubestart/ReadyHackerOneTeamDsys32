@@ -5,12 +5,14 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {Motion, spring, presets} from 'react-motion';
 
+const BASE_URL = "http://10.0.99.62:3001" //"http://10.0.99.191:3000"; ;
+
 class Register extends Component {
   constructor(props){
     super(props);
 
     this.state = {
-      name: "",
+      name_: "",
       email: "",
       password: "",
       nameError: false,
@@ -25,7 +27,7 @@ class Register extends Component {
 
   changeName(event) {
     this.setState({
-      name: event.target.value
+      name_: event.target.value
     })
   }
 
@@ -47,10 +49,17 @@ class Register extends Component {
     })
   }
 
-  async handleCreateUser(email, password){
+  async handleCreateUser(){
+    let name = this.state.name_;
+    let email = this.state.email;
+    let password = this.state.password;
+
     try {
-      let response = await axios.post("/user/login", 
+      console.log(name + " " + email + " " + password);
+
+      let response = await axios.post(BASE_URL + "/user/register", 
         {
+          name: name,
           email: email,
           password: password
         }
@@ -65,9 +74,6 @@ class Register extends Component {
   }
 
   render() {
-    let email = this.state.email;
-    let password = this.state.password;
-
     let emailForm;
     if (this.state.emailError){
       emailForm = <Motion defaultStyle={{x: 0}} style={{x: spring(20,  presets.wobbly)}}>
@@ -95,7 +101,7 @@ class Register extends Component {
 
           <div style = {{marginBottom: "30px"}}></div>
 
-          <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "100px", left: "15%"}} content = "get started!" callback = {(email, password) => this.handleLogin(email, password)}></Button>
+          <Button style = {{width: "fit-content", color : "white", background : "#1c5bff", position: "fixed", bottom: "100px", left: "15%"}} content = "get started!" callback = {() => this.handleCreateUser()}></Button>
         </div>
       </div>
     )

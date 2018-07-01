@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import { Link } from 'react-router-dom';
 
+const BASE_URL = "http://10.0.99.62:3001" //"https://bonnie-api.dsys32.com"
+
 class Login extends Component {
   constructor(props){
     super(props);
@@ -13,6 +15,9 @@ class Login extends Component {
       password: ""
     };
 
+    this.loginForm = React.createRef();
+
+    this.handleLogin = this.handleLogin.bind(this);
     this.changeEmail = this.changeEmail.bind(this);
     this.changePassword = this.changePassword.bind(this);
   }
@@ -29,9 +34,14 @@ class Login extends Component {
     })
   }
 
-  async handleLogin(email, password){
+  async handleLogin(){
+    this.loginForm.current.submit();
+    
     try {
-      let response = await axios.post("/user/login", 
+      let email = this.state.email;
+      let password = this.state.password;
+
+      let response = await axios.post(BASE_URL + "/user/login", 
         {
           email: email,
           password: password
@@ -47,20 +57,20 @@ class Login extends Component {
   }
 
   render() {
-    let email = this.state.email;
-    let password = this.state.password;
+   
 
     return (
       <div className = "login-card valign-wrapper z-depth-3">
         <div style = {{width: "100%", textAlign: "center"}}>
 
-          <input placeholder = "email" value = {this.state.email} className = 'login-input' onChange = {this.changeEmail}></input>
-
-          <input placeholder = "password" value = {this.state.password} type = 'password' className = 'login-input' onChange = {this.changePassword}></input>
+          <form method = "POST" action = "http://10.0.99.62:3001/user/login" ref = {this.loginForm}>
+            <input name = 'email' placeholder = "email" value = {this.state.email} className = 'login-input' onChange = {this.changeEmail}></input>
+            <input name = 'password' placeholder = "password" value = {this.state.password} type = 'password' className = 'login-input' onChange = {this.changePassword}></input>
+          </form>
 
           <div style = {{marginBottom: "30px"}}></div>
 
-          <Button content = "log in" callback = {(email, password) => this.handleLogin(email, password)}></Button>
+          <Button content = "log in" callback = {this.handleLogin}></Button>
           <Link to = '/register'>
             <Button content = "register"></Button>
           </Link>
