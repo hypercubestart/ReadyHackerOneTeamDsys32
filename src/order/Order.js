@@ -76,8 +76,9 @@ class Order extends Component {
   handleConfirm() {
     placeOrder(this.state.items, (response) => {
       if (response.status == 200) {
+        console.log(response.data._id);
         this.setState({
-          orderID: new Buffer(response.data.toString(), 'hex').toString('base64').substring(0, 8),
+          orderID: new Buffer(response.data._id.toString(), 'hex').toString('base64').substring(0, 8),
           step: 2
         });
       }
@@ -178,7 +179,7 @@ class Order extends Component {
 
         <div className = "order-page" style = {{position: "absolute", top: "0", left: "114.8%", width: "50%"}}>
           <div className = "order-page" style = {{paddingTop: "0"}}>
-            <Confirmation items = {this.state.items} changeQuantityCallback = {this.changeQuantity} cancelItemCallback = {this.cancelItem}></Confirmation>
+            <Confirmation items = {this.state.items} orderID={this.state.orderID} changeQuantityCallback = {this.changeQuantity} cancelItemCallback = {this.cancelItem}></Confirmation>
           </div>
         </div>    
     </div>}
@@ -192,7 +193,7 @@ class Order extends Component {
         {value => <div className = "order-steps" style = {{marginLeft: (15 - value.x * 33.5) + "%", marginBottom: "25px", width: "100%", position: "fixed", top: "80px", zIndex: '10000', left: '0'}}>
         <OrderStep content = "menu" selected = {this.state.step == 0}></OrderStep>
         <OrderStep content = "check out" selected = {this.state.step == 1}></OrderStep>
-        <OrderStep content = {"confirmation: " + this.state.orderID } selected = {this.state.step == 2}></OrderStep>
+        <OrderStep content = {"confirmation" } selected = {this.state.step == 2}></OrderStep>
       </div>}
       </Motion>
       

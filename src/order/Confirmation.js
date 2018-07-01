@@ -58,10 +58,13 @@ export default class Confirmation extends Component {
         </div>
 
         <div style = {{fontSize: "50px", color: "black", marginBottom: "0px", marginTop: "25px"}}>user information</div>
-        <div style = {{fontSize: "36px", color: "#527aff"}}>
+        <div style = {{fontSize: "24px", color: "#527aff"}}>
+            {this.props.orderID}
+        </div>
+        <div style = {{fontSize: "24px", color: "black"}}>
             {this.state.userInfo.name}
         </div>
-        <div style = {{fontSize: "36px", color: "#527aff"}}>
+        <div style = {{fontSize: "24px", color: "black"}}>
             {this.state.userInfo.email}
         </div>
     </div>
