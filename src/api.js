@@ -95,7 +95,7 @@ var cancelOrder = (id, callback) => {
 }
 
 var getOrders = (callback) => {
-  const url = BASE_URL + '/order/get';
+  const url = BASE_URL + '/order/export';
 
   axios.get(url, {withCredentials: true}).then((res) => callback(res)).catch((err) => console.log(err));
 }
