@@ -1,6 +1,6 @@
 {
   "name": "bonnies",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
@@ -15,6 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-web": "docker build -f Dockerfile -t docker.dsys32.com/bonnie-web:latest -t docker.dsys32.com/bonnie-web:v${npm_package_version} .",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
