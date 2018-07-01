@@ -74,7 +74,16 @@ class Order extends Component {
   }
 
   handleConfirm() {
-    placeOrder(this.state.items, (response) => {
+    var outItems = [];
+
+    this.state.items.slice().forEach((item) => {
+      outItems.push({
+        _id: item.itemId,
+        quantity: item.quantity
+      });
+    });
+
+    placeOrder(outItems, (response) => {
       if (response.status == 200) {
         console.log(response.data._id);
         this.setState({
