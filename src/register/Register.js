@@ -54,15 +54,11 @@ class Register extends Component {
     let email = this.state.email;
     let password = this.state.password;
 
-    try {
-      console.log(name + " " + email + " " + password);
+    console.log(name + " " + email + " " + password);
 
-      register(name, email, password, (response) => {
-        console.log(response);
-      });
-    } catch (error) {
-      console.log(error + " in App.LoginCard.handleLogin");
-    }
+    register(name, email, password, (response) => {
+      console.log(response);
+    });
 
   }
 
