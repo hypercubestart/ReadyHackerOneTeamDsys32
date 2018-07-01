@@ -65,10 +65,10 @@ class Order extends Component {
     for (var i = 0; i < itemsCopy.length; i++) {
       var item = itemsCopy[i];
       if (item.itemId == id) {
-        if (inc == -1 && item.quantity == 0) return;
+        if ((inc == -1 && item.quantity == 0) || (fromItem && itemsCopy[i].quantity > 1)) return;   // Once we've clicked on the item once, clicking on it again should not do anything
         itemsCopy[i].quantity += inc;
-        if (fromItem && itemsCopy[i].quantity > 1){
-          itemsCopy[i].quantity = 1;
+        if (fromItem && itemsCopy[i].quantity == 2){    // we check if the quantity is equal to 2 because if it is anything higher then we've clicked on the increment button at least once, meaning we don't want clicking the item to reset our quantity to 1
+          itemsCopy[i].quantity = 1;  
         }
         break;
       }
@@ -168,7 +168,7 @@ class Item extends Component {
         <ItemPrice content = {this.props.data.price}></ItemPrice>
         <ItemQuantity content = {this.props.data.quantity} itemId = {this.props.data.itemId} callback = {this.props.changeQuantityCallback}></ItemQuantity>
 
-        <ItemCancel itemId = {this.props.data.itemId} callback =  {this.props.cancelItemCallback}></ItemCancel>
+        {(this.props.data.quantity > 0) && <ItemCancel itemId = {this.props.data.itemId} callback =  {this.props.cancelItemCallback}></ItemCancel>}
       </div>
     </div>
   }
