@@ -131,4 +131,40 @@ exports.registerStaff = async (req, res) => {
   });
 }
 
+exports.fetchOrders = async (req, res) => {
+  try {
+    let orders = await orders.find({fulfilledTime: undefined, cancelledTime: undefined}).exec();
 
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).end();
+  }
+}
+
+exports.fulfillOrder = async (req, res) => {
+  var id = req.body.id;
+
+  if (!id) return res.status(400).end();
+
+  try {
+    await Order.updateOne({_id: id}, { $set: { fulfilledTime: Date.now() }}).exec();
+
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
+  }
+}
+
+exports.cancelOrder = async (req, res) => {
+  var id = req.body.id;
+
+  if (!id) return res.status(400).end();
+
+  try {
+    await Order.updateOne({_id: id}, { $set: { cancelledTime: Date.now() }}).exec();
+
+    res.status(200).end();
+  } catch (err) {
+    res.status(500).end();
+  }
+}
