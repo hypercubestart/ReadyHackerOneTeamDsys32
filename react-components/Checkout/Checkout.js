@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native
 import globalStyles from '../styles'
 import Spinner from 'react-native-loading-spinner-overlay';
 import CheckoutItem from './CheckoutItem'
+import { NavigationActions, StackActions } from 'react-navigation'; 
 
 export default class Checkout extends React.Component {
     constructor(props) {
@@ -14,9 +15,14 @@ export default class Checkout extends React.Component {
             user: {},
             order: this.parseOrder(this.props.navigation.getParam('order', []))
         }
+
+        this.placeOrder = this.placeOrder.bind(this)
     }
 
     placeOrder() {
+        this.setState({
+            isPlacingOrder: true
+        })
         fetch("https://bonnie-api.dsys32.com/order/place/", {
             method: 'POST',
             headers: {
@@ -26,6 +32,26 @@ export default class Checkout extends React.Component {
             body: JSON.stringify({
                 items: this.state.order,
             }),
+        }).then((response) => {
+            this.setState({
+                isPlacingOrder: false
+            })
+            if (response.status === 200) {
+                response.json().then((responseJson) => {
+                    const resetAction = StackActions.reset({
+                        index: 0,
+                        actions: [NavigationActions.navigate({ routeName: 'OrderConfirmation', params: {
+                            order_id: responseJson._id,
+                            order: this.state.order
+                        } })],
+                    });
+                    this.props.navigation.dispatch(resetAction);
+                })
+            } else {
+                alert('error!')
+            }
+        }).catch(() => {
+
         })
     }
 
