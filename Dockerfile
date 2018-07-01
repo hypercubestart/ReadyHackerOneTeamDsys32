@@ -7,7 +7,7 @@ COPY package.json /usr/src/app
 # Install app dependencies
 RUN npm install
 RUN npm install http-server -g
-RUN npm build
+RUN npm run-script build
 
 COPY . /usr/src/app
 
