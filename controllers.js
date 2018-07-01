@@ -208,7 +208,17 @@ exports.cancelOrder = async (req, res) => {
   if (!id) return res.status(400).end();
 
   try {
-    await Order.updateOne({_id: id}, { $set: { cancelledTime: Date.now() }}).exec();
+    let order = await Order.updateOne({_id: id}, { $set: { cancelledTime: Date.now() }}).exec();
+    let user = await User.findOne({_id: order.user}).exec()
+
+    const msg = {
+      to: user.email,
+      from: 'bonnies@bonnies.com',
+      subject: 'Your Order,' + order._id.toString().slice(0, 6) + ', was cancelled',
+      text: 'This message is to notify you of the cancellation of your recent order',
+      html: '<strong>Have a wonderful 4th of July holiday!!</strong>',
+    }
+    sgMail.send(msg);
 
     res.status(200).end();
   } catch (err) {
