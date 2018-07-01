@@ -19,6 +19,7 @@ class Order extends Component {
     };
 
     this.changeQuantity = this.changeQuantity.bind(this);
+    this.cancelItem = this.cancelItem.bind(this);
   }
 
   async componentWillMount(){
@@ -76,6 +77,26 @@ class Order extends Component {
     
     console.log("CHANGING " + id + " " + inc);
   }
+
+  cancelItem(event, id) {
+    event.stopPropagation(); 
+
+    var itemsCopy = this.state.items.slice();
+
+    for (var i = 0; i < itemsCopy.length; i++) {
+      var item = itemsCopy[i];
+      if (item.itemId == id) {
+        itemsCopy[i].quantity = 0;
+        break;
+      }
+    }
+
+    this.setState(
+      {
+        items: itemsCopy
+      }
+    );
+  }
   
   /*
   <Motion defaultStyle={{x: 0}} style={{x: spring(20,  presets.wobbly)}}>
@@ -97,7 +118,7 @@ class Order extends Component {
 
     let itemGroups = Object.keys(groups).map((group) => {
       var itemsInGroup = groups[group].map((item) => {
-        return <Item data = {item} callback = {this.changeQuantity}></Item>
+        return <Item data = {item} changeQuantityCallback = {this.changeQuantity} cancelItemCallback = {this.cancelItem}></Item>
       })
 
       return <div style = {{display: "flex", flexWrap: "wrap", position: "relative", marginBottom: "25px"}}>
@@ -147,12 +168,14 @@ class Item extends Component {
       borderString = '3px solid #527aff';
     }
     
-    return <div onClick = {(event) => this.props.callback(event, this.props.data.itemId, 1, 1, true)} style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px"}}>
+    return <div onClick = {(event) => this.props.changeQuantityCallback(event, this.props.data.itemId, 1, 1, true)} style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px"}}>
       <div>
         <ItemTitle content = {this.props.data.title}></ItemTitle>
         <ItemDescription content = {this.props.data.description}></ItemDescription>
         <ItemPrice content = {this.props.data.price}></ItemPrice>
-        <ItemQuantity content = {this.props.data.quantity} itemId = {this.props.data.itemId} callback = {this.props.callback}></ItemQuantity>
+        <ItemQuantity content = {this.props.data.quantity} itemId = {this.props.data.itemId} callback = {this.props.changeQuantityCallback}></ItemQuantity>
+
+        <ItemCancel itemId = {this.props.data.itemId} callback =  {this.props.cancelItemCallback}></ItemCancel>
       </div>
     </div>
   }
@@ -187,6 +210,14 @@ class ItemQuantity extends Component {
     }else{
       return <div></div>
     }
+  }
+}
+
+class ItemCancel extends Component {
+  render () {
+    return <div onClick = {(event) => this.props.callback(event, this.props.itemId)} style = {{fontSize: "20px", color: "#f05056", position: "absolute", top: "20px", right: "25px"}}>
+      <i className = 'material-icons' style = {{fontSize: "30px"}}>close</i>
+    </div>
   }
 }
 
