@@ -119,7 +119,7 @@ exports.registerStaff = async (req, res) => {
     var staffObject = new Staff({
       name: name,
       email: email,
-      password: hash
+      passHashed: hash
     });
 
     try {
