@@ -39,9 +39,8 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSAppTransportSecurity</key>
-	<!--See http://ste.vn/2015/06/10/configuring-app-transport-security-ios-9-osx-10-11/ -->
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
@@ -52,5 +51,69 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Zocial.ttf</string>
+		<string>Montserrat-Black.ttf</string>
+		<string>Montserrat-BlackItalic.ttf</string>
+		<string>Montserrat-Bold.ttf</string>
+		<string>Montserrat-BoldItalic.ttf</string>
+		<string>Montserrat-ExtraBold.ttf</string>
+		<string>Montserrat-ExtraBoldItalic.ttf</string>
+		<string>Montserrat-ExtraLight.ttf</string>
+		<string>Montserrat-ExtraLightItalic.ttf</string>
+		<string>Montserrat-Italic.ttf</string>
+		<string>Montserrat-Light.ttf</string>
+		<string>Montserrat-LightItalic.ttf</string>
+		<string>Montserrat-Medium.ttf</string>
+		<string>Montserrat-MediumItalic.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
+		<string>Montserrat-SemiBold.ttf</string>
+		<string>Montserrat-SemiBoldItalic.ttf</string>
+		<string>Montserrat-Thin.ttf</string>
+		<string>Montserrat-ThinItalic.ttf</string>
+		<string>Sofia Pro Black Italic.otf</string>
+		<string>Sofia Pro Black.otf</string>
+		<string>Sofia Pro Bold Italic.otf</string>
+		<string>Sofia Pro Bold.otf</string>
+		<string>Sofia Pro Extra Light Italic.otf</string>
+		<string>Sofia Pro Extra Light.otf</string>
+		<string>Sofia Pro Italic.otf</string>
+		<string>Sofia Pro Light Italic.otf</string>
+		<string>Sofia Pro Light.otf</string>
+		<string>Sofia Pro Medium Italic.otf</string>
+		<string>Sofia Pro Medium.otf</string>
+		<string>Sofia Pro Regular.otf</string>
+		<string>Sofia Pro Semi Bold Italic.otf</string>
+		<string>Sofia Pro Semi Bold.otf</string>
+		<string>Sofia Pro Ultra Light Italic.otf</string>
+		<string>Sofia Pro Ultra Light.otf</string>
+		<string>SofiaPro-Black.otf</string>
+		<string>SofiaPro-Bold.otf</string>
+		<string>SofiaPro-BoldItalic.otf</string>
+		<string>SofiaPro-ExtraLight.otf</string>
+		<string>SofiaPro-ExtraLightItalic.otf</string>
+		<string>SofiaPro-Italic.otf</string>
+		<string>SofiaPro-Light.otf</string>
+		<string>SofiaPro-LightItalic.otf</string>
+		<string>SofiaPro-Medium.otf</string>
+		<string>SofiaPro-MediumItalic.otf</string>
+		<string>SofiaPro-Regular.otf</string>
+		<string>SofiaPro-SemiBold.otf</string>
+		<string>SofiaPro-SemiBoldItalic.otf</string>
+		<string>SofiaPro-UltraLight.otf</string>
+		<string>SofiaPro-UltraLightItalic.otf</string>
+		<string>SofiaProBlack-Italic.otf</string>
+	</array>
 </dict>
 </plist>
