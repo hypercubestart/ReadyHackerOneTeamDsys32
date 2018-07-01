@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Animated, Keyboard } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import globalStyles from '../styles'
 import Spinner from 'react-native-loading-spinner-overlay';
+
+const BUTTONS_VIEW_NO_KEYBOARD_MARGIN_BOTTOM = 20
+const BUTTONS_VIEW_KEYBOARD_MARGIN_BOTTOM = 300
+const ANIMATION_TIME = 100 //ms
 
 export default class Register extends React.Component {
     constructor(props) {
@@ -19,10 +23,38 @@ export default class Register extends React.Component {
 
         this.backButtonPressed = this.backButtonPressed.bind(this)
         this.registerButtonPressed = this.registerButtonPressed.bind(this)
+        this._keyboardDidShow = this._keyboardDidShow.bind(this)
+        this._keyboardDidHide = this._keyboardDidHide.bind(this)
+
+        this.buttonsViewMarginBottom = new Animated.Value(BUTTONS_VIEW_NO_KEYBOARD_MARGIN_BOTTOM)
     }
 
     backButtonPressed() {
         this.props.navigation.goBack()
+    }
+
+    componentDidMount () {
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    }
+    
+    componentWillUnmount () {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    }
+    
+    _keyboardDidShow () {
+        Animated.timing(this.buttonsViewMarginBottom, {
+            duration: ANIMATION_TIME,
+            toValue: BUTTONS_VIEW_KEYBOARD_MARGIN_BOTTOM,
+        }).start()
+    }
+    
+    _keyboardDidHide () {
+        Animated.timing(this.buttonsViewMarginBottom, {
+            duration: ANIMATION_TIME,
+            toValue: BUTTONS_VIEW_NO_KEYBOARD_MARGIN_BOTTOM,
+        }).start()
     }
 
     registerButtonPressed() {
@@ -59,7 +91,7 @@ export default class Register extends React.Component {
 
     render() {
         return(
-            <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <View style={styles.container}>
                 <Spinner visible={this.state.spinnerVisible}/>
                 <View style={styles.header}>
                     <MaterialIcons name="arrow-back" style={globalStyles.backButton} onPress={this.backButtonPressed}/>
@@ -98,14 +130,14 @@ export default class Register extends React.Component {
                     </View>
                 </View>
 
-                <View style={{alignContent: 'center', flexDirection: 'row', justifyContent: 'space-around'}}>
+                <Animated.View style={{alignContent: 'center', flexDirection: 'row', justifyContent: 'space-around', marginBottom: this.buttonsViewMarginBottom,}}>
                     <TouchableOpacity style={[globalStyles.roundedButton, styles.getStartedButton]} onPress={this.registerButtonPressed}>
                         <Text style={styles.getStartedText}>
                             get started
                         </Text>
                     </TouchableOpacity>
-                </View>
-            </KeyboardAvoidingView>
+                </Animated.View>
+            </View>
         )
     }
 }
@@ -144,7 +176,6 @@ const styles = StyleSheet.create({
     },
     getStartedButton: {
         backgroundColor: "#1C5BFF",
-        marginBottom: 20,
         width: 200,
         height: 50,
     },

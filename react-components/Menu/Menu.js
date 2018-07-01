@@ -60,6 +60,13 @@ export default class Menu extends React.Component {
         })
     }
 
+    isOrderEmpty() {
+        for (var key in this.state.order) {
+            return false
+        }
+        return true
+    }
+
     componentDidMount() {
         this.getMenu().then(function(responseJson) {
             this.setState({
@@ -131,7 +138,7 @@ export default class Menu extends React.Component {
                     }
                 />
                 <View style={{alignItems: 'flex-end'}}>
-                    <TouchableOpacity style={[globalStyles.roundedButton, styles.nextButton]} onPress={this.goToCheckOut}>
+                    <TouchableOpacity style={[globalStyles.roundedButton, styles.nextButton, {backgroundColor: this.isOrderEmpty() ? '#7f8c8d' : '#1C5BFF'}]} onPress={this.goToCheckOut} disabled={this.isOrderEmpty()}>
                         <Text style={styles.checkOutText}>
                             next: check out
                         </Text>
@@ -154,7 +161,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     nextButton: {
-        backgroundColor: '#1C5BFF',
         width: 200,
         height: 40,
         marginBottom: 20,

@@ -1,8 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard, Animated } from 'react-native';
 import { NavigationActions, StackActions } from 'react-navigation'; 
 import globalStyles from '../styles'
 import Spinner from 'react-native-loading-spinner-overlay';
+
+const BUTTONS_VIEW_NO_KEYBOARD_MARGIN_TOP = 130
+const BUTTONS_VIEW_KEYBOARD_MARGIN_TOP = 50
+const ANIMATION_TIME = 100 //ms
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -11,11 +15,40 @@ export default class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            spinnerVisible: false
+            spinnerVisible: false,
         }
 
         this.registerButtonPress = this.registerButtonPress.bind(this)
         this.loginButtonPress = this.loginButtonPress.bind(this)
+        this._keyboardDidShow = this._keyboardDidShow.bind(this)
+        this._keyboardDidHide = this._keyboardDidHide.bind(this)
+
+        this.buttonsViewMarginTop = new Animated.Value(BUTTONS_VIEW_NO_KEYBOARD_MARGIN_TOP)
+    }
+
+
+    componentDidMount () {
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    }
+    
+    componentWillUnmount () {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    }
+    
+    _keyboardDidShow () {
+        Animated.timing(this.buttonsViewMarginTop, {
+            duration: ANIMATION_TIME,
+            toValue: BUTTONS_VIEW_KEYBOARD_MARGIN_TOP,
+        }).start()
+    }
+    
+    _keyboardDidHide () {
+        Animated.timing(this.buttonsViewMarginTop, {
+            duration: ANIMATION_TIME,
+            toValue: BUTTONS_VIEW_NO_KEYBOARD_MARGIN_TOP,
+        }).start()
     }
 
     registerButtonPress() {
@@ -48,7 +81,7 @@ export default class Login extends React.Component {
                 });
                 this.props.navigation.dispatch(resetAction);
             } else {
-                alert('error!')
+                alert('bad username or password!')
             }
         })
         .catch((error) =>{
@@ -88,7 +121,7 @@ export default class Login extends React.Component {
                         </TextInput>
                     </View>
                 </View>
-                <View style={styles.buttonsView}>
+                <Animated.View style={[styles.buttonsView, {marginTop: this.buttonsViewMarginTop}]}>
                     <TouchableOpacity style={[globalStyles.roundedButton, styles.button]} onPress={this.registerButtonPress}>
                         <Text style={styles.buttonText}>
                             register
@@ -99,7 +132,7 @@ export default class Login extends React.Component {
                             log in
                         </Text>
                     </TouchableOpacity>
-                </View>
+                </Animated.View>
             </KeyboardAvoidingView>
         )
     }
@@ -135,7 +168,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     buttonsView: {
-        marginTop: 130,
         flexDirection: 'row'
     },
     button: {
