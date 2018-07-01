@@ -132,7 +132,14 @@ class Button extends Component {
 
 class Item extends Component {
   render () {
-    return <div style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: "3px solid #527aff", borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px"}}>
+    var borderString;
+    if (this.props.quantity > 0) {
+      borderString = '3px solid #14DB88';
+    } else {
+      borderString = '3px solid #527aff';
+    }
+    
+    return <div style = {{position: "relative", width: "30%", minWidth: "250px", height: "170px", border: borderString, borderRadius: "15px", padding: "15px 25px 15px 25px", marginRight: "15px"}}>
       <div>
         <ItemTitle content = {this.props.data.title}></ItemTitle>
         <ItemDescription content = {this.props.data.description}></ItemDescription>
