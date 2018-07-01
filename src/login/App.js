@@ -70,7 +70,7 @@ class Login extends Component {
 
           <div style = {{marginBottom: "30px"}}></div>
 
-          <Button content = "log in" callback = {this.handleLogin}></Button>
+          <Button style={{ cursor: 'pointer' }} content = "log in" callback = {this.handleLogin}></Button>
           <Link to = '/register'>
             <Button content = "register"></Button>
           </Link>
