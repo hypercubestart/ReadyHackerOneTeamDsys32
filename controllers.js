@@ -154,7 +154,7 @@ exports.getStaff = async (req, res) => {
 
 exports.fetchOrders = async (req, res) => {
   try {
-    let orders = await Order.find({fulfilledTime: { $exists: false }, cancelledTime: { $exists: false }}).exec();
+    let orders = await Order.find({fulfilledTime: { $exists: false }, cancelledTime: { $exists: false }}).populate('user').populate('items').exec();
 
     res.status(200).json(orders);
   } catch (err) {
